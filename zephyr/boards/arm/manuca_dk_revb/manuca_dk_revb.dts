@@ -55,6 +55,11 @@
 		led1 = &ld204;
 		led2 = &ld205;
 	};
+
+	// Pin for ADC
+	adc1_in1_pg2: adc1_in1_pg2 {
+		pinmux = <STM32_PINMUX('G', 2, ANALOG)>;
+	};
 };
 
 /*
@@ -126,7 +131,7 @@
  *	SCL: PF1/PH1
  *	SDA: PF0/PH0
  */
- &i2c2 {
+&i2c2 {
 	pinctrl-0 = <&i2c2_scl_pf1 &i2c2_sda_pf0>;
 	status = "okay";
 	clock-frequency = <I2C_BITRATE_FAST>;
@@ -165,7 +170,7 @@
  *	MISO: PC2
  *	MOSI: PC3
  */
- &spi2 {
+&spi2 {
 	pinctrl-0 = <&spi2_nss_pb12 &spi2_sck_pb10 &spi2_miso_pc2 &spi2_mosi_pc3>;
 	status = "okay";
 };
@@ -220,14 +225,10 @@
 	};
 };
 
-// &adc1 {
-// 	pinctrl-0 = <&adc1_in1_pg2>;
-// 	status = "okay";
-
-// 	adc1_in1_pg2: adc1_in1_pg2 {
-// 		pinmux = <STM32_PINMUX('G', 2, ANALOG)>;
-// 	};
-// };
+&adc1 {
+	pinctrl-0 = <&adc1_in1_pg2>;
+	status = "okay";
+};
 
 &iwdg {
 	status = "okay";
