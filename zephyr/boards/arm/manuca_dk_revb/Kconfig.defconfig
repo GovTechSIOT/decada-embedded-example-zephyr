@@ -1,0 +1,6 @@
+if BOARD_MANUCA_DK_REVB
+
+config BOARD
+	default "manuca_dk_revb"
+
+endif # BOARD_MANUCA_DK_REVB

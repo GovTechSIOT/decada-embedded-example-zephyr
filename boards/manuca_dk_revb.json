@@ -1,0 +1,25 @@
+{
+    "name": "MANUCA Development Board Rev B",
+    "build": {
+        "core": "stm32",
+        "cpu": "cortex-m7",
+        "f_cpu": "216000000L",
+        "mcu": "stm32f767zit6"
+    },
+    "frameworks": [
+        "zephyr"
+    ],
+    "debug": {
+        "openocd_target": "stm32f7x"
+    },
+    "upload": {
+        "maximum_ram_size": 524288,
+        "maximum_size": 2097152,
+        "protocols": [
+            "stlink"
+        ],
+        "protocol": "stlink"
+    },
+    "url": "",
+    "vendor": ""
+}
