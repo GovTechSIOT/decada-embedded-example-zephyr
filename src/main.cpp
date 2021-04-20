@@ -21,7 +21,6 @@
 
 void main(void)
 {
-
 	const struct device* led0;
 	const struct device* led1;
 	const struct device* led2;
