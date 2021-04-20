@@ -7,4 +7,6 @@ include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 project(zephyr-test)
 
 FILE(GLOB app_sources ../src/*.c*)
+FILE(GLOB thread_sources ../threads/*.c*)
 target_sources(app PRIVATE ${app_sources})
+target_sources(app PRIVATE ${thread_sources})
