@@ -20,7 +20,7 @@
  * @param my_sem       thread's own semaphore
  * @param other_sem    other thread's semaphore
  */
-void ExecuteBehaviorManagerThread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem)
+void execute_behavior_manager_thread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem)
 {
 	const char *tname;
 	uint8_t cpu;

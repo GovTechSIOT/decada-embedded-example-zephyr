@@ -15,5 +15,5 @@
  *******************************************************************************************************/
 #include <zephyr.h>
 
-void ExecuteBehaviorManagerThread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem);
-void ExecuteCommunicationsThread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem);
+void execute_behavior_manager_thread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem);
+void execute_communications_thread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem);

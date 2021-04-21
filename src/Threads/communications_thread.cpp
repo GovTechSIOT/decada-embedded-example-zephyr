@@ -5,7 +5,7 @@
  * @param my_sem       thread's own semaphore
  * @param other_sem    other thread's semaphore
  */
-void ExecuteCommunicationsThread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem)
+void execute_communications_thread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem)
 {
 	const char *tname;
 	uint8_t cpu;
