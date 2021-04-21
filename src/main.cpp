@@ -1,7 +1,7 @@
 #include <zephyr.h>
 #include <device.h>
 #include <devicetree.h>
-#include "Threads/threads.h"
+#include "threads/threads.h"
 
 #define PIN_THREADS (IS_ENABLED(CONFIG_SMP)		  \
 		     && IS_ENABLED(CONFIG_SCHED_CPU_MASK) \
