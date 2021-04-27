@@ -1,6 +1,34 @@
-#include "threads.h"
+#include <logging/log.h>
+LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 
-/*
+#include <net/sntp.h>
+#include "networking/dns/dns_lookup.h"
+#include "networking/wifi/wifi_connect.h"
+#include "threads.h"
+#include "user_config.h"
+
+#define SNTP_TIMEOUT    (10*MSEC_PER_SEC)
+
+/**
+ * 	@brief	Wrapper to perform SNTP query with a specified server address
+ * 	@author	Lee Tze Han
+ * 	@param 	sntp_ipaddr	IP address of NTP server
+ * 	@note 	The UDP port number is taken to be 123 (RFC-1305)
+ */
+void sntp_query(const char* sntp_ipaddr)
+{
+	struct sntp_time sntp_time;
+
+	int rc = sntp_simple(sntp_ipaddr, SNTP_TIMEOUT, &sntp_time);
+	if (rc < 0) {
+		LOG_WRN("Failure in SNTP query: %d", rc);
+		return;
+	}
+
+	LOG_INF("SNTP timestamp: %" PRIu32, (uint32_t)sntp_time.seconds);
+}
+
+/**
  * @param my_name      thread identification string
  * @param my_sem       thread's own semaphore
  * @param other_sem    other thread's semaphore
@@ -13,6 +41,29 @@ void execute_communications_thread(const char *my_name, struct k_sem *my_sem, st
 
 	const int wait_time_us = 100000;
 	const int sleep_time_ms = 500;
+
+	k_poll_signal_init(&wifi_signal);
+	k_poll_signal_init(&dns_signal);
+	
+	/* Setup WiFi connection */
+	wifi_mgmt_event_init();
+	wifi_connect();
+
+	/* Block until WiFi connection is established */
+	k_poll(wifi_events, 1, K_FOREVER);
+
+	/* Resolve SNTP server hostname */
+	dns_ipv4_lookup(USER_CONFIG_SNTP_SERVER_ADDR);
+	
+	/* Block until address is resolved */
+	k_poll(dns_events, 1, K_FOREVER);
+
+	/* Convert sockaddr to IP address string */
+	char ipv4[INET_ADDRSTRLEN];
+	struct sockaddr_in* addr = (struct sockaddr_in*)&resolved_addrinfo.ai_addr;
+	LOG_DBG("Resolved address as %s", inet_ntop(AF_INET, &addr->sin_addr, ipv4, INET_ADDRSTRLEN));
+
+	sntp_query(ipv4);
 
 	while (true) 
 	{

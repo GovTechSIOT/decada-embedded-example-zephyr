@@ -1,6 +1,10 @@
+#include <logging/log.h>
+LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
+
 #include <zephyr.h>
 #include <device.h>
 #include <devicetree.h>
+#include <drivers/gpio.h>
 #include "threads/threads.h"
 
 #define PIN_THREADS (IS_ENABLED(CONFIG_SMP)		  \
@@ -62,4 +66,5 @@ void main(void)
 	/* Start threads */
 	k_thread_start(&communications_thread_data);
 	k_thread_start(&behavior_manager_thread_data);
+
 }

@@ -1,0 +1,10 @@
+&xbee_serial {
+	status = "okay";
+	current-speed = <115200>;
+	
+	esp32 {
+        compatible = "espressif,esp";
+        label = "esp32";
+		status = "okay";
+	};
+};

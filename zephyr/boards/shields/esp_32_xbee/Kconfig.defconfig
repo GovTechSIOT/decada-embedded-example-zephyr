@@ -1,0 +1,16 @@
+if SHIELD_ESP_32_XBEE
+
+if NETWORKING
+
+config WIFI_ESP
+    default y
+    depends on WIFI
+
+choice WIFI_ESP_AT_VERSION
+	default WIFI_ESP_AT_VERSION_2_0
+	depends on WIFI_ESP
+endchoice
+
+endif # NETWORKING
+
+endif # SHIELD_ESP_32_XBEE

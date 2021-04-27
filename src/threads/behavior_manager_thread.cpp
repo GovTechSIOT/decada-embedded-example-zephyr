@@ -1,5 +1,8 @@
-#include "threads.h"
+#include <logging/log.h>
+LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
+
 #include <drivers/gpio.h>
+#include "threads.h"
 
 #define LED0_NODE DT_ALIAS(led0)
 #define LED1_NODE DT_ALIAS(led1)
@@ -15,7 +18,7 @@
 #define PIN2	DT_GPIO_PIN(LED2_NODE, gpios)
 #define FLAGS2	DT_GPIO_FLAGS(LED2_NODE, gpios)
 
-/*
+/**
  * @param my_name      thread identification string
  * @param my_sem       thread's own semaphore
  * @param other_sem    other thread's semaphore

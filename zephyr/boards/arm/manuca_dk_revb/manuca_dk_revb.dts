@@ -55,11 +55,6 @@
 		led1 = &ld204;
 		led2 = &ld205;
 	};
-
-	// Pin for ADC
-	adc1_in1_pg2: adc1_in1_pg2 {
-		pinmux = <STM32_PINMUX('G', 2, ANALOG)>;
-	};
 };
 
 /*
@@ -90,14 +85,15 @@
 
 /*
  *	XBEE WiFi USART6 (Connector CN501, CN502)
+ *	Included through the esp_32_xbee shield
  *
  *	TX:  PC6
  * 	RX:  PC7
  *	RTS: PG12
  *	CTS: PG15
  */
-&usart6 {
-	pinctrl-0 = <&usart6_tx_pc6 &usart6_rx_pc7 &usart6_rts_pg12 &usart6_cts_pg15>;
+xbee_serial: &usart6 {
+	pinctrl-0 = <&usart6_tx_pc6 &usart6_rx_pc7>;
 	current-speed = <115200>;
 	status = "okay";
 };
@@ -223,11 +219,6 @@
 		status = "okay";
 		pinctrl-0 = <&tim1_ch3_pe13>;
 	};
-};
-
-&adc1 {
-	pinctrl-0 = <&adc1_in1_pg2>;
-	status = "okay";
 };
 
 &iwdg {
