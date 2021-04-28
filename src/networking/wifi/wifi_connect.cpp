@@ -8,7 +8,8 @@ static struct net_mgmt_event_callback wifi_mgmt_cb;
 
 struct k_poll_signal wifi_signal;
 struct k_poll_event wifi_events[] = {
-	K_POLL_EVENT_INITIALIZER(K_POLL_TYPE_SIGNAL, K_POLL_MODE_NOTIFY_ONLY, &wifi_signal)
+	K_POLL_EVENT_INITIALIZER(K_POLL_TYPE_SIGNAL, K_POLL_MODE_NOTIFY_ONLY,
+				 &wifi_signal),
 };
 
 /**
@@ -54,7 +55,8 @@ void handle_wifi_disconnect_result(struct net_mgmt_event_callback* cb)
  * @param	mgmt_event	Event signature
  * @param	netif		Network interface pointer
  */
-void wifi_mgmt_event_handler(struct net_mgmt_event_callback* cb, uint32_t mgmt_event, struct net_if* netif)
+void wifi_mgmt_event_handler(struct net_mgmt_event_callback* cb,
+			     uint32_t mgmt_event, struct net_if* netif)
 {
 	switch (mgmt_event) {
 	case NET_EVENT_WIFI_CONNECT_RESULT:
@@ -75,11 +77,11 @@ void wifi_mgmt_event_handler(struct net_mgmt_event_callback* cb, uint32_t mgmt_e
 void wifi_mgmt_event_init(void)
 {
 	/* Bitmask of events registered in handler */
-	uint32_t registered_wifi_mgmt_events = 
-		NET_EVENT_WIFI_CONNECT_RESULT | 
-		NET_EVENT_WIFI_DISCONNECT_RESULT;
-	
-	net_mgmt_init_event_callback(&wifi_mgmt_cb, wifi_mgmt_event_handler, registered_wifi_mgmt_events);
+	uint32_t registered_wifi_mgmt_events = NET_EVENT_WIFI_CONNECT_RESULT |
+					       NET_EVENT_WIFI_DISCONNECT_RESULT;
+
+	net_mgmt_init_event_callback(&wifi_mgmt_cb, wifi_mgmt_event_handler,
+				     registered_wifi_mgmt_events);
 
 	net_mgmt_add_event_callback(&wifi_mgmt_cb);
 }
@@ -95,18 +97,20 @@ void wifi_connect(void)
 	char wifi_pass[] = USER_CONFIG_WIFI_PASS;
 
 	struct wifi_connect_req_params wifi_params = {
-		.ssid = 		(uint8_t*)wifi_ssid,
-		.ssid_length = 	(uint8_t)strlen(wifi_ssid),
-		.psk = 			(uint8_t*)wifi_pass,
-		.psk_length = 	(uint8_t)strlen(wifi_pass),
-		.channel = 		WIFI_CHANNEL_ANY,
-		.security = 	WIFI_SECURITY_TYPE_PSK
+		.ssid = (uint8_t*)wifi_ssid,
+		.ssid_length = (uint8_t)strlen(wifi_ssid),
+		.psk = (uint8_t*)wifi_pass,
+		.psk_length = (uint8_t)strlen(wifi_pass),
+		.channel = WIFI_CHANNEL_ANY,
+		.security = WIFI_SECURITY_TYPE_PSK
 	};
 
 	/* Assumes default interface is WiFi */
 	struct net_if* iface = net_if_get_default();
 
-	if (net_mgmt(NET_REQUEST_WIFI_CONNECT, iface, &wifi_params, sizeof(struct wifi_connect_req_params))) {
+	if (net_mgmt(NET_REQUEST_WIFI_CONNECT, iface, &wifi_params,
+		     sizeof(struct wifi_connect_req_params)))
+	{
 		LOG_WRN("Failed to request connection to WiFi");
 	}
 	else {

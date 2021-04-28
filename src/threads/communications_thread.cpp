@@ -7,7 +7,7 @@ LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 #include "threads.h"
 #include "user_config.h"
 
-#define SNTP_TIMEOUT    (10*MSEC_PER_SEC)
+#define SNTP_TIMEOUT (10 * MSEC_PER_SEC)
 
 /**
  * 	@brief	Wrapper to perform SNTP query with a specified server address
@@ -33,18 +33,19 @@ void sntp_query(const char* sntp_ipaddr)
  * @param my_sem       thread's own semaphore
  * @param other_sem    other thread's semaphore
  */
-void execute_communications_thread(const char *my_name, struct k_sem *my_sem, struct k_sem *other_sem)
+void execute_communications_thread(const char* my_name, struct k_sem* my_sem,
+				   struct k_sem* other_sem)
 {
-	const char *tname;
+	const char* tname;
 	uint8_t cpu;
-	struct k_thread *current_thread;
+	struct k_thread* current_thread;
 
 	const int wait_time_us = 100000;
 	const int sleep_time_ms = 500;
 
 	k_poll_signal_init(&wifi_signal);
 	k_poll_signal_init(&dns_signal);
-	
+
 	/* Setup WiFi connection */
 	wifi_mgmt_event_init();
 	wifi_connect();
@@ -54,19 +55,20 @@ void execute_communications_thread(const char *my_name, struct k_sem *my_sem, st
 
 	/* Resolve SNTP server hostname */
 	dns_ipv4_lookup(USER_CONFIG_SNTP_SERVER_ADDR);
-	
+
 	/* Block until address is resolved */
 	k_poll(dns_events, 1, K_FOREVER);
 
 	/* Convert sockaddr to IP address string */
 	char ipv4[INET_ADDRSTRLEN];
-	struct sockaddr_in* addr = (struct sockaddr_in*)&resolved_addrinfo.ai_addr;
-	LOG_DBG("Resolved address as %s", inet_ntop(AF_INET, &addr->sin_addr, ipv4, INET_ADDRSTRLEN));
+	struct sockaddr_in* addr =
+		(struct sockaddr_in*)&resolved_addrinfo.ai_addr;
+	LOG_DBG("Resolved address as %s",
+		inet_ntop(AF_INET, &addr->sin_addr, ipv4, INET_ADDRSTRLEN));
 
 	sntp_query(ipv4);
 
-	while (true) 
-	{
+	while (true) {
 		k_sem_take(my_sem, K_FOREVER);
 
 		/* Thread Logic */
@@ -79,10 +81,11 @@ void execute_communications_thread(const char *my_name, struct k_sem *my_sem, st
 #endif
 		if (tname == NULL) {
 			printk("%s: Thread initialized from cpu %d on %s!\n",
-				my_name, cpu, CONFIG_BOARD);
-		} else {
+			       my_name, cpu, CONFIG_BOARD);
+		}
+		else {
 			printk("%s: Thread initialized from cpu %d on %s!\n",
-				tname, cpu, CONFIG_BOARD);
+			       tname, cpu, CONFIG_BOARD);
 		}
 
 		/* End this thread loop */

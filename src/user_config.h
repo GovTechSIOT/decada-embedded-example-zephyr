@@ -5,13 +5,13 @@
  *      WiFi Details
  */
 // Maximum of 32 characters
-#define USER_CONFIG_WIFI_SSID           ("")
+#define USER_CONFIG_WIFI_SSID ("")
 // Between 8 - 64 characters
-#define USER_CONFIG_WIFI_PASS           ("")
+#define USER_CONFIG_WIFI_PASS ("")
 
 /**
  *      SNTP Server address
  */
-#define USER_CONFIG_SNTP_SERVER_ADDR    ("pool.ntp.org")
+#define USER_CONFIG_SNTP_SERVER_ADDR ("pool.ntp.org")
 
 #endif // _USER_CONFIG_H_
