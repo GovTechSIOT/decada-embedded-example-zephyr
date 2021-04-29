@@ -29,7 +29,7 @@ BinPackArguments: true
 BinPackParameters: true
 BraceWrapping:
   AfterCaseLabel: false
-  AfterClass: false
+  AfterClass: true
   AfterControlStatement: MultiLine
   AfterEnum: false
   AfterFunction: true
@@ -64,11 +64,11 @@ ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 IncludeBlocks: Merge
 IncludeCategories:
-  # Zephyr header always first
-  - Regex:      '<zephyr.h>'
-    Priority:   1
   # Headers in <> without extension
   - Regex:      '<([A-Za-z0-9\/-_])+>'
+    Priority:   1
+  # Zephyr header always first
+  - Regex:      '<zephyr.h>'
     Priority:   2
   # Headers in <> with extension.
   - Regex:      '<([A-Za-z0-9.\/-_])+>'

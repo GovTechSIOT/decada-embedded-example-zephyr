@@ -44,7 +44,6 @@ void execute_communications_thread(const char* my_name, struct k_sem* my_sem,
 	const int sleep_time_ms = 500;
 
 	k_poll_signal_init(&wifi_signal);
-	k_poll_signal_init(&dns_signal);
 
 	/* Setup WiFi connection */
 	wifi_mgmt_event_init();
@@ -54,19 +53,11 @@ void execute_communications_thread(const char* my_name, struct k_sem* my_sem,
 	k_poll(wifi_events, 1, K_FOREVER);
 
 	/* Resolve SNTP server hostname */
-	dns_ipv4_lookup(USER_CONFIG_SNTP_SERVER_ADDR);
+	DnsLookup dns_lookup(USER_CONFIG_SNTP_SERVER_ADDR);
+	std::string ipaddr = dns_lookup.get_ipaddr();
 
-	/* Block until address is resolved */
-	k_poll(dns_events, 1, K_FOREVER);
-
-	/* Convert sockaddr to IP address string */
-	char ipv4[INET_ADDRSTRLEN];
-	struct sockaddr_in* addr =
-		(struct sockaddr_in*)&resolved_addrinfo.ai_addr;
-	LOG_DBG("Resolved address as %s",
-		inet_ntop(AF_INET, &addr->sin_addr, ipv4, INET_ADDRSTRLEN));
-
-	sntp_query(ipv4);
+	LOG_DBG("Resolved address as %s", ipaddr.c_str());
+	sntp_query(ipaddr.c_str());
 
 	while (true) {
 		k_sem_take(my_sem, K_FOREVER);
