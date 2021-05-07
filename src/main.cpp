@@ -10,16 +10,14 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 #define PIN_THREADS                                                     \
 	(IS_ENABLED(CONFIG_SMP) && IS_ENABLED(CONFIG_SCHED_CPU_MASK) && \
 	 (CONFIG_MP_NUM_CPUS > 1))
-#define STACKSIZE 1024
-#define PRIORITY  7
+#define STACK_SIZE 4096
+#define PRIORITY   7
 
 /* Thread Configurations */
-K_THREAD_STACK_DEFINE(communications_thread_stack_area, STACKSIZE);
-K_THREAD_STACK_DEFINE(behavior_manager_thread_stack_area, STACKSIZE);
+K_THREAD_STACK_DEFINE(communications_thread_stack_area, STACK_SIZE * 2);
+K_THREAD_STACK_DEFINE(behavior_manager_thread_stack_area, STACK_SIZE);
 static struct k_thread communications_thread_data;
 static struct k_thread behavior_manager_thread_data;
-K_SEM_DEFINE(communications_thread_sem, 1, 1);	 /* starts off "available" */
-K_SEM_DEFINE(behavior_manager_thread_sem, 0, 1); /* starts off "unavailable" */
 
 void behavior_manager_thread(void* dummy1, void* dummy2, void* dummy3)
 {
@@ -27,8 +25,7 @@ void behavior_manager_thread(void* dummy1, void* dummy2, void* dummy3)
 	ARG_UNUSED(dummy2);
 	ARG_UNUSED(dummy3);
 
-	execute_behavior_manager_thread(__func__, &behavior_manager_thread_sem,
-					&communications_thread_sem);
+	execute_behavior_manager_thread();
 }
 
 void communications_thread(void* dummy1, void* dummy2, void* dummy3)
@@ -37,8 +34,7 @@ void communications_thread(void* dummy1, void* dummy2, void* dummy3)
 	ARG_UNUSED(dummy2);
 	ARG_UNUSED(dummy3);
 
-	execute_communications_thread(__func__, &communications_thread_sem,
-				      &behavior_manager_thread_sem);
+	execute_communications_thread();
 }
 
 void main(void)

@@ -18,15 +18,8 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #define PIN2   DT_GPIO_PIN(LED2_NODE, gpios)
 #define FLAGS2 DT_GPIO_FLAGS(LED2_NODE, gpios)
 
-/**
- * @param my_name      thread identification string
- * @param my_sem       thread's own semaphore
- * @param other_sem    other thread's semaphore
- */
-void execute_behavior_manager_thread(const char* my_name, struct k_sem* my_sem,
-				     struct k_sem* other_sem)
+void execute_behavior_manager_thread(void)
 {
-	const int wait_time_us = 100000;
 	const int sleep_time_ms = 500;
 
 	/* Init GPIO LEDs */
@@ -54,17 +47,12 @@ void execute_behavior_manager_thread(const char* my_name, struct k_sem* my_sem,
 	}
 
 	while (true) {
-		k_sem_take(my_sem, K_FOREVER);
-
 		/* Thread Logic */
 		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id],
 			     (int)led_is_on[current_led_id]);
 		led_is_on[current_led_id] = !led_is_on[current_led_id];
 		current_led_id = (current_led_id + 1) % 3;
 
-		/* End this thread loop */
-		k_busy_wait(wait_time_us);
 		k_msleep(sleep_time_ms);
-		k_sem_give(other_sem);
 	}
 }
