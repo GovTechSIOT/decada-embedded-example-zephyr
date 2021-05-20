@@ -35,6 +35,10 @@ std::string read_key(KeyName key);
 //
 ////////////////////////////////////////////////////////////////////
 
+/**
+ *  @brief  Initialize persistent storage.
+ *  @author Lau Lee Hong
+ */
 void init_persist_storage(void)
 {
         int rc = 0;
@@ -90,6 +94,11 @@ void write_sw_ver(const std::string sw_ver)
         return;
 }
 
+/**
+ *  @brief  Writes client certificate to flash memory.
+ *  @author Lau Lee Hong
+ *  @param  cert ssl client cert received from server
+ */
 void write_client_certificate(const std::string cert)
 {
         write_key(
@@ -100,6 +109,11 @@ void write_client_certificate(const std::string cert)
         return;
 }
 
+/**
+ *  @brief  Writes client certificate serial number to flash memory.
+ *  @author Lau Lee Hong
+ *  @param  cert_sn certificate serial number received from decada
+ */
 void write_client_certificate_serial_number(const std::string cert_sn)
 {
         write_key(
@@ -110,6 +124,11 @@ void write_client_certificate_serial_number(const std::string cert_sn)
         return;
 }
 
+/**
+ *  @brief  Writes client private key (in PEM format) to flash memory.
+ *  @author Lau Lee Hong
+ *  @param  private_key client private key in PEM format
+ */
 void write_client_private_key(const std::string private_key)
 {
         write_key(
