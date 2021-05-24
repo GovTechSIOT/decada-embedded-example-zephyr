@@ -248,7 +248,7 @@ std::string read_key(KeyName key)
         memset(buffer, 0, readout_buffer_size + 1);
 
         int rc = nvs_read(&fs, key, &buffer, readout_buffer_size);
-        if (rc < 0) {
+        if (rc > 0) {
                 LOG_DBG("Id: %d, Data: %s", key, std::string((const char*) buffer).c_str());
         } else {
                 LOG_WRN("Failed to read key (returned %d)", rc);

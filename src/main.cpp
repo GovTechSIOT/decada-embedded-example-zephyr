@@ -14,7 +14,7 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 #define PRIORITY   7
 
 /* Thread Configurations */
-K_THREAD_STACK_DEFINE(communications_thread_stack_area, STACK_SIZE * 2);
+K_THREAD_STACK_DEFINE(communications_thread_stack_area, STACK_SIZE * 8);
 K_THREAD_STACK_DEFINE(behavior_manager_thread_stack_area, STACK_SIZE);
 static struct k_thread communications_thread_data;
 static struct k_thread behavior_manager_thread_data;
