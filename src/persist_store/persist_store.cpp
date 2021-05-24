@@ -212,7 +212,7 @@ void write_key(KeyName key, const std::string& val)
         const char* val_cstr = val.c_str();
 
         int rc = nvs_write(&fs, key, val_cstr, strlen(val_cstr));
-        if (rc != 0) {
+        if (rc < 0) {
                 LOG_WRN("Failed to set key (returned %d)", rc);
         }
     
@@ -243,12 +243,13 @@ std::string read_key(KeyName key)
         LOG_DBG("Reading key %d", key);
 
         /* buffer is one char larger to accomodate null terminator */
-        char* buffer[fs.sector_size + 1];
-        memset(buffer, 0, fs.sector_size + 1);
+        const int readout_buffer_size = 2048;
+        char* buffer[readout_buffer_size+1];
+        memset(buffer, 0, readout_buffer_size + 1);
 
-        int rc = nvs_read(&fs, key, &buffer, fs.sector_size);
-        if (rc > 0) {
-                LOG_DBG("Id: %d, Data: %s", key, buffer);
+        int rc = nvs_read(&fs, key, &buffer, readout_buffer_size);
+        if (rc < 0) {
+                LOG_DBG("Id: %d, Data: %s", key, std::string((const char*) buffer).c_str());
         } else {
                 LOG_WRN("Failed to read key (returned %d)", rc);
                 return std::string();
