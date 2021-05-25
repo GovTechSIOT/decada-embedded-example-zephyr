@@ -3,4 +3,8 @@ if BOARD_MANUCA_DK_REVB
 config BOARD
 	default "manuca_dk_revb"
 
+config UUID_ADDRESS
+	hex "Address pointing to MCU's factory flashed UUID"
+	default 0x1FF0F420
+
 endif # BOARD_MANUCA_DK_REVB

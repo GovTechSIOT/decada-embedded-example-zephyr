@@ -5,6 +5,7 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 #include <device.h>
 #include <devicetree.h>
 #include <drivers/gpio.h>
+#include "device_uuid/device_uuid.h"
 #include "threads/threads.h"
 
 #define PIN_THREADS                                                     \
@@ -13,8 +14,11 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 #define STACK_SIZE 4096
 #define PRIORITY   7
 
+/* Initialize global device UUID */
+const std::string device_uuid = read_device_uuid();
+
 /* Thread Configurations */
-K_THREAD_STACK_DEFINE(communications_thread_stack_area, STACK_SIZE * 2);
+K_THREAD_STACK_DEFINE(communications_thread_stack_area, STACK_SIZE * 4);
 K_THREAD_STACK_DEFINE(behavior_manager_thread_stack_area, STACK_SIZE);
 static struct k_thread communications_thread_data;
 static struct k_thread behavior_manager_thread_data;

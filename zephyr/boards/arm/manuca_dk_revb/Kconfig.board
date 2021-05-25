@@ -1,3 +1,5 @@
 config BOARD_MANUCA_DK_REVB
 	bool "MANUCA Development Board Rev B"
 	depends on SOC_STM32F767XX
+	
+	select USE_STM32_HAL_RNG

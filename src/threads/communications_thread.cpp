@@ -2,6 +2,8 @@
 LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 
 #include <time.h>
+#include "networking/http/http_request.h"
+#include "networking/http/http_response.h"
 #include "networking/wifi/wifi_connect.h"
 #include "threads.h"
 #include "time_engine/time_manager.h"
@@ -21,6 +23,16 @@ void execute_communications_thread(void)
 
 	TimeManager time_manager;
 	time_manager.sync_sntp_rtc();
+
+	HttpRequest http_req("http://qihao.ddns.net", 2001);
+	HttpResponse* resp = http_req.send_request(HTTP_POST, "test payload");
+	if (resp) {
+		LOG_INF("Received HTTP response: %s", resp->get_body().c_str());
+	}
+	else {
+		LOG_ERR("null resp");
+	}
+	delete resp;
 
 	int counter = 0;
 	while (true) {
