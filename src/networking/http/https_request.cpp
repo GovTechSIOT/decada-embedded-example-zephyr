@@ -3,12 +3,11 @@ LOG_MODULE_REGISTER(https_request, LOG_LEVEL_DBG);
 
 #include <net/tls_credentials.h>
 #include "https_request.h"
+#include "tls_certs.h"
 
 #define HTTPS_SCHEME ("https://")
-#define CA_CERT_TAG  1
 
-HttpsRequest::HttpsRequest(std::string url, const char* ca_certs, int port) :
-	HttpBase(url, port), ca_certs_(ca_certs)
+HttpsRequest::HttpsRequest(std::string url, int port) : HttpBase(url, port)
 {
 	/* Sanity check for URL scheme */
 	if (url.rfind(HTTPS_SCHEME, 0) == std::string::npos) {
@@ -35,9 +34,10 @@ bool HttpsRequest::setup_socket(sockaddr_in* addr)
 		return false;
 	}
 
-	/* Configure socket options */
-	sec_tag_t sec_tag_list[] = { CA_CERT_TAG };
+	/* Credentials should already be added */
+	sec_tag_t sec_tag_list[] = { CA_CERTS_TAG };
 
+	/* Configure socket options */
 	int rc = setsockopt(sock_, SOL_TLS, TLS_SEC_TAG_LIST, sec_tag_list,
 			    sizeof(sec_tag_list));
 	if (rc < 0) {
@@ -50,14 +50,6 @@ bool HttpsRequest::setup_socket(sockaddr_in* addr)
 			hostname_.size());
 	if (rc < 0) {
 		LOG_WRN("Failed to set socket option TLS_HOSTNAME: %d", -errno);
-		return false;
-	}
-
-	/* Set recognized CA certificates */
-	rc = tls_credential_add(CA_CERT_TAG, TLS_CREDENTIAL_CA_CERTIFICATE,
-				ca_certs_, strlen(ca_certs_) + 1);
-	if (rc < 0) {
-		LOG_WRN("Failed to set CA certificates: %d", -errno);
 		return false;
 	}
 
