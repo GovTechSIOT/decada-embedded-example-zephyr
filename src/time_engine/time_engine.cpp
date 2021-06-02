@@ -1,6 +1,7 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(time_engine, LOG_LEVEL_DBG);
 
+#include <sstream>
 #include <time.h>
 #include "networking/dns/dns_lookup.h"
 #include "time_engine.h"
@@ -20,14 +21,17 @@ int64_t TimeEngine::get_timestamp(void)
 }
 
 /**
- * @brief	Get Unix epoch timestamp in milliseconds
+ * @brief	Get string representing Unix epoch timestamp in milliseconds
  * @author	Lee Tze Han
  * @return	Current timestamp
  * @note	This does not provide millisecond resolution but pads the timestamp for convenience
  */
-int64_t TimeEngine::get_timestamp_ms(void)
+std::string TimeEngine::get_timestamp_ms_str(void)
 {
-	return (get_timestamp() * 1000);
+	std::ostringstream ss;
+	ss << (get_timestamp() * 1000);
+
+	return ss.str();
 }
 
 #if defined(CONFIG_BOARD_MANUCA_DK_REVB)
@@ -43,6 +47,7 @@ int64_t TimeEngine::get_timestamp_ms(void)
 struct tm TimeEngine::get_rtc_datetime(int64_t* timestamp_ptr)
 {
 	struct tm time = {
+
 		/*
 		 * tm_sec:	Number of seconds after the minute (0-59), with (60) reserved for leap seconds
 		 * RTC second:  Similarly defined, but without (60)
@@ -72,8 +77,7 @@ struct tm TimeEngine::get_rtc_datetime(int64_t* timestamp_ptr)
 		 * tm_mon:	Number of months since January (0-11)
 		 * RTC month:	Months start from January (1) to December (12)
 		 */
-		.tm_mon =
-			__LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetMonth(RTC)) - 1,
+		.tm_mon = __LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetMonth(RTC)) - 1,
 
 		/*
 		 * tm_year:	Number of years since 1900
@@ -81,8 +85,7 @@ struct tm TimeEngine::get_rtc_datetime(int64_t* timestamp_ptr)
 		 * 
 		 * The conversion tm_year = (RTC year)+100 holds for years 2000 to 2099
 		 */
-		.tm_year = __LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetYear(RTC)) +
-			   100,
+		.tm_year = __LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetYear(RTC)) + 100,
 
 		/* Value is ignored */
 		.tm_wday = 0,
@@ -161,6 +164,7 @@ void TimeEngine::update_rtc_time(uint64_t timestamp)
 	};
 
 	LL_RTC_TimeTypeDef rtc_time = {
+
 		/* 
                  * Using the expected time format of 24-hour time 
 		 */

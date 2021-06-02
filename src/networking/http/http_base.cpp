@@ -59,7 +59,7 @@ bool HttpBase::send_request(http_method method, std::string payload)
 	req.protocol = HTTP_REQUEST_PROTOCOL;
 	req.method = method;
 	req.url = endpoint_.c_str();
-	req.host = ipaddr_.c_str();
+	req.host = host_.c_str();
 	req.response = response_cb;
 	req.recv_buf = recv_buf_;
 	req.recv_buf_len = sizeof(recv_buf_);
@@ -131,6 +131,19 @@ void HttpBase::parse_url(std::string url)
 		hostname_ = url.substr(scheme_len - 1);
 		endpoint_ = "/";
 	}
+
+	/* Hostname may contain port */
+	idx = hostname_.find_first_of(':');
+	if (idx != -1) {
+		/* Use port number from URL instead */
+		int port = stol(hostname_.substr(idx + 1));
+		LOG_INF("Using port %d parsed from URL", port);
+
+		port_ = port;
+		hostname_ = hostname_.substr(0, idx);
+	}
+
+	host_ = hostname_ + ":" + std::to_string(port_);
 
 	LOG_DBG("Parsed hostname: '%s'", hostname_.c_str());
 	LOG_DBG("Parsed endpoint: '%s'", endpoint_.c_str());

@@ -12,6 +12,7 @@ public:
 
 private:
 	std::string body_ = "";
+	int idx_ = 0;
 };
 
 #endif // _HTTP_RESPONSE_H_

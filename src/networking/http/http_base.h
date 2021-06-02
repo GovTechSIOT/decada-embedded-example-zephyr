@@ -19,6 +19,7 @@ public:
 protected:
 	std::string ipaddr_;
 	std::string hostname_;
+	std::string host_;
 	int port_;
 	int sock_;
 

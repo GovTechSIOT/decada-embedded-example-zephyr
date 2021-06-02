@@ -22,16 +22,16 @@ void HttpResponse::append_body(http_response* resp)
                  * resp->body_start. The buffer is not guaranteed to be NULL-terminated.
                  */
 
-		if (resp->body_start) {
-			int offset = (resp->body_start - resp->recv_buf) /
-				     sizeof(resp->recv_buf[0]);
+		int len = resp->processed - idx_;
 
-			body_.append((char*)resp->body_start,
-				     resp->data_len - offset);
+		if (resp->body_start) {
+			body_.append((char*)resp->body_start, len);
 		}
 		else {
-			body_.append((char*)resp->recv_buf, resp->data_len);
+			body_.append((char*)resp->recv_buf, len);
 		}
+
+		idx_ += len;
 	}
 }
 
