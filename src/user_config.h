@@ -5,9 +5,9 @@
  *      WiFi Details
  */
 // Maximum of 32 characters
-#define USER_CONFIG_WIFI_SSID ("NineTripleSix")
+#define USER_CONFIG_WIFI_SSID ("")
 // Between 8 - 64 characters
-#define USER_CONFIG_WIFI_PASS ("zero9six6six!")
+#define USER_CONFIG_WIFI_PASS ("")
 
 /**
  *      SNTP Server address
