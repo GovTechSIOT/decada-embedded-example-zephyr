@@ -91,6 +91,7 @@
  * 	RX:  PC7
  *	RTS: PG12
  *	CTS: PG15
+ *	RST: PF11 (Configured in ESP overlay)
  */
 xbee_serial: &usart6 {
 	pinctrl-0 = <&usart6_tx_pc6 &usart6_rx_pc7>;
@@ -189,7 +190,7 @@ xbee_serial: &usart6 {
  *
  *	MDC:	 PC1
  *	RXD0:	 PC4
- *  RXD1:	 PC5
+ *  	RXD1: 	 PC5
  *	REF_CLK: PA1
  *	MDIO:	 PA2
  *	CRS_DV:  PA7

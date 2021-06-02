@@ -8,5 +8,8 @@ set (SHIELD esp_32_xbee)
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 project(zephyr-test)
 
+# Makes src/mbedtls_config.h visible
+zephyr_include_directories(../src)
+
 FILE(GLOB app_sources ../src/*.c*)
 target_sources(app PRIVATE ${app_sources})

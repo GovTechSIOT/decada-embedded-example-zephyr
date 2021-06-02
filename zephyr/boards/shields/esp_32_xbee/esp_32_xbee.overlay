@@ -3,8 +3,10 @@
 	current-speed = <115200>;
 	
 	esp32 {
-        compatible = "espressif,esp";
-        label = "esp32";
+		compatible = "espressif,esp";
+		// RST Pin: PF11
+		reset-gpios = <&gpiof 11 GPIO_ACTIVE_LOW>;
+		label = "esp32";
 		status = "okay";
 	};
 };
