@@ -159,7 +159,8 @@ bool CryptoEngine::generate_keypair(void)
 std::string CryptoEngine::make_subject_name(void)
 {
 	TimeEngine time_engine;
-	const int64_t timestamp_ms = time_engine.get_timestamp_ms();
+	const int milisec_multiplier = 1000;
+	const int64_t timestamp_ms = time_engine.get_timestamp() * milisec_multiplier;
 
 	return cert_subject_base_ + device_uuid + std::to_string(timestamp_ms);
 }

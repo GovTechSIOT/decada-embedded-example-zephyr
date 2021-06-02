@@ -3,7 +3,7 @@ LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 
 #include <net/tls_credentials.h>
 #include <time.h>
-#include "decada_manager/decada_manager.h"
+//#include "decada_manager/decada_manager.h"
 #include "networking/http/http_request.h"
 #include "networking/http/http_response.h"
 #include "networking/wifi/wifi_connect.h"
@@ -37,7 +37,7 @@ void execute_communications_thread(void)
 
 	init_persist_storage();
 	write_sw_ver("R1.0.0");
-	DecadaManager decada_manager;
+	//DecadaManager decada_manager;
 
 	int counter = 0;
 	
