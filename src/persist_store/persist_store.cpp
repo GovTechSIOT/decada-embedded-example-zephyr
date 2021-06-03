@@ -71,6 +71,8 @@ void init_persist_storage(void)
         }
 
         LOG_INF("Persistent Storage initialized");
+
+        return;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -230,6 +232,8 @@ void write_key(KeyName key, const std::string& val)
 void write_key(KeyName key, const int val)
 {
     write_key(key, int_to_string(val));
+
+    return;
 }
 
 /**
