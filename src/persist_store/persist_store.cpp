@@ -253,11 +253,11 @@ std::string read_key(KeyName key)
 
         int rc = nvs_read(&fs, key, &buffer, readout_buffer_size);
         if (rc > 0) {
-		LOG_DBG("Id: %d, Data: %s", key, (const char*)buffer);
-	} else {
+                LOG_DBG("Id: %d, Data: %s", key, (const char*)buffer);
+        } else {
                 LOG_WRN("Failed to read key (returned %d)", rc);
                 return std::string();
         }
-        
+
         return std::string((const char*) buffer);
 }
