@@ -1,12 +1,12 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(persist_store, LOG_LEVEL_DBG);
 
-#include "persist_store.h"
 #include <device.h>
 #include <drivers/flash.h>
-#include <storage/flash_map.h>
 #include <fs/nvs.h>
+#include <storage/flash_map.h>
 #include "conversions/conversions.h"
+#include "persist_store.h"
 
 static struct nvs_fs fs;
 
@@ -36,8 +36,8 @@ std::string read_key(KeyName key);
 ////////////////////////////////////////////////////////////////////
 
 /**
- *  @brief  Initialize persistent storage.
- *  @author Lau Lee Hong
+ *  @brief      Initialize persistent storage.
+ *  @author     Lau Lee Hong
  */
 void init_persist_storage(void)
 {
@@ -52,13 +52,13 @@ void init_persist_storage(void)
 	 */
 	flash_dev = DEVICE_DT_GET(FLASH_NODE);
 	if (!device_is_ready(flash_dev)) {
-		LOG_DBG("Flash device %s is not ready\n", flash_dev->name);
+		LOG_WRN("Flash device %s is not ready\n", flash_dev->name);
 		return;
 	}
 	fs.offset = FLASH_AREA_OFFSET(storage);
 	rc = flash_get_page_info_by_offs(flash_dev, fs.offset, &info);
 	if (rc) {
-		LOG_DBG("Unable to get page info\n");
+		LOG_WRN("Unable to get page info\n");
 		return;
 	}
 	fs.sector_size = info.size;
@@ -66,7 +66,7 @@ void init_persist_storage(void)
 
 	rc = nvs_init(&fs, flash_dev->name);
 	if (rc) {
-		LOG_WRN("Flash Init failed\n");
+		LOG_ERR("Flash Init failed\n");
 		return;
 	}
 
@@ -80,9 +80,9 @@ void init_persist_storage(void)
 ////////////////////////////////////////////////////////////////////
 
 /**
- *  @brief  Writes current os version to flash memory.
- *  @author Lau Lee Hong
- *  @param  sw_ver Operating systems's version to be stored
+ *  @brief      Writes current os version to flash memory.
+ *  @author     Lau Lee Hong
+ *  @param      sw_ver  Operating systems's version to be stored
  */
 void write_sw_ver(const std::string sw_ver)
 {
@@ -95,9 +95,9 @@ void write_sw_ver(const std::string sw_ver)
 }
 
 /**
- *  @brief  Writes client certificate to flash memory.
- *  @author Lau Lee Hong
- *  @param  cert ssl client cert received from server
+ *  @brief      Writes client certificate to flash memory.
+ *  @author     Lau Lee Hong
+ *  @param      cert    SSL client cert received from server
  */
 void write_client_certificate(const std::string cert)
 {
@@ -110,9 +110,9 @@ void write_client_certificate(const std::string cert)
 }
 
 /**
- *  @brief  Writes client certificate serial number to flash memory.
- *  @author Lau Lee Hong
- *  @param  cert_sn certificate serial number received from decada
+ *  @brief      Writes client certificate serial number to flash memory.
+ *  @author     Lau Lee Hong
+ *  @param      cert_sn         Certificate serial number received from decada
  */
 void write_client_certificate_serial_number(const std::string cert_sn)
 {
@@ -125,9 +125,9 @@ void write_client_certificate_serial_number(const std::string cert_sn)
 }
 
 /**
- *  @brief  Writes client private key (in PEM format) to flash memory.
- *  @author Lau Lee Hong
- *  @param  private_key client private key in PEM format
+ *  @brief      Writes client private key (in PEM format) to flash memory.
+ *  @author     Lau Lee Hong
+ *  @param      private_key     Client private key in PEM format
  */
 void write_client_private_key(const std::string private_key)
 {
@@ -146,9 +146,9 @@ void write_client_private_key(const std::string private_key)
 ////////////////////////////////////////////////////////////////////
 
 /**
- *  @brief  Reads a previously stored software version from flash memory.
- *  @author Lau Lee hong
- *  @return software version in persistent storage
+ *  @brief      Reads a previously stored software version from flash memory.
+ *  @author     Lau Lee Hong
+ *  @return     Software version in persistent storage
  */
 std::string read_sw_ver(void)
 {
@@ -158,9 +158,9 @@ std::string read_sw_ver(void)
 }
 
 /**
- *  @brief  Reads the client certificate from flash memory.
- *  @author Lau Lee Hong
- *  @return client certificate in PEM format
+ *  @brief      Reads the client certificate from flash memory.
+ *  @author     Lau Lee Hong
+ *  @return     Client certificate in PEM format
  */
 std::string read_client_certificate(void)
 {
@@ -170,9 +170,9 @@ std::string read_client_certificate(void)
 }
 
 /**
- *  @brief  Reads the client certificate serial number from flash memory.
- *  @author Lau Lee Hong
- *  @return client certificate serial number
+ *  @brief      Reads the client certificate serial number from flash memory.
+ *  @author     Lau Lee Hong
+ *  @return     Client certificate serial number
  */
 std::string read_client_certificate_serial_number(void)
 {
@@ -182,9 +182,9 @@ std::string read_client_certificate_serial_number(void)
 }
 
 /**
- *  @brief  Reads the client private key (PEM) from flash memory.
- *  @author Lau Lee Hong
- *  @return client private key in PEM format
+ *  @brief      Reads the client private key (PEM) from flash memory.
+ *  @author     Lau Lee Hong
+ *  @return     Client private key in PEM format
  */
 std::string read_client_private_key(void)
 {
@@ -200,10 +200,10 @@ std::string read_client_private_key(void)
 ////////////////////////////////////////////////////////////////////
 
 /**
- *  @brief  Writes a key-value pair to flash memory.
- *  @author Lau Lee Hog
- *  @param  key Id value in NVS
- *  @param  val String value to be stored under key
+ *  @brief      Writes a key-value pair to flash memory.
+ *  @author     Lau Lee Hong
+ *  @param      key     Id value in NVS
+ *  @param      val     String value to be stored under key
  */
 void write_key(KeyName key, const std::string& val)
 {
@@ -222,10 +222,10 @@ void write_key(KeyName key, const std::string& val)
 }
 
 /**
- *  @brief  Integer overload for WriteKey.
- *  @author Lau Lee Hong
- *  @param  key Id value in NVS
- *  @param  val Integer value to be stored under key
+ *  @brief      Integer overload for WriteKey.
+ *  @author     Lau Lee Hong
+ *  @param      key     Id value in NVS
+ *  @param      val     Integer value to be stored under key
  */
 void write_key(KeyName key, const int val)
 {
@@ -233,10 +233,10 @@ void write_key(KeyName key, const int val)
 }
 
 /**
- *  @brief  Get value of key-value pair from flash memory.
- *  @author Lau Lee Hong
- *  @param  key NVS id
- *  @return val C++ string stored under key
+ *  @brief      Get value of key-value pair from flash memory.
+ *  @author     Lau Lee Hong
+ *  @param      key     NVS id
+ *  @return     val     C++ string stored under key
  */
 std::string read_key(KeyName key)
 {
@@ -249,8 +249,8 @@ std::string read_key(KeyName key)
 
         int rc = nvs_read(&fs, key, &buffer, readout_buffer_size);
         if (rc > 0) {
-                LOG_DBG("Id: %d, Data: %s", key, std::string((const char*) buffer).c_str());
-        } else {
+		LOG_DBG("Id: %d, Data: %s", key, (const char*)buffer);
+	} else {
                 LOG_WRN("Failed to read key (returned %d)", rc);
                 return std::string();
         }
