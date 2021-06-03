@@ -3,11 +3,12 @@ LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 
 #include <net/tls_credentials.h>
 #include <time.h>
-#include "decada_manager/decada_manager.h"
+//#include "decada_manager/decada_manager.h"
 #include "networking/http/http_request.h"
 #include "networking/http/http_response.h"
 #include "networking/wifi/wifi_connect.h"
 #include "threads.h"
+#include "persist_store/persist_store.h"
 #include "time_engine/time_manager.h"
 #include "tls_certs.h"
 
@@ -34,9 +35,15 @@ void execute_communications_thread(void)
 	TimeManager time_manager;
 	time_manager.sync_sntp_rtc();
 
-	DecadaManager decada_manager;
+	init_persist_storage();
+	write_sw_ver("R1.0.0");
+	//DecadaManager decada_manager;
 
 	int counter = 0;
+	
+	std::string sw_ver = read_sw_ver();
+	LOG_DBG("sw_ver (read from flash): %s", sw_ver.c_str());
+	
 	while (true) {
 		/* Periodically print Unix epoch timestamp */
 		if (counter >= 120) {
