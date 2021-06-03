@@ -42,33 +42,33 @@ std::string read_key(KeyName key);
 void init_persist_storage(void)
 {
         int rc = 0;
-	struct flash_pages_info info;
-	const struct device *flash_dev;
+        struct flash_pages_info info;
+        const struct device *flash_dev;
 
-	/* define the nvs file system by settings with:
-	 *	sector_size equal to the pagesize,
-	 *	3 sectors
-	 *	starting at FLASH_AREA_OFFSET(storage)
-	 */
-	flash_dev = DEVICE_DT_GET(FLASH_NODE);
-	if (!device_is_ready(flash_dev)) {
-		LOG_WRN("Flash device %s is not ready\n", flash_dev->name);
-		return;
-	}
-	fs.offset = FLASH_AREA_OFFSET(storage);
-	rc = flash_get_page_info_by_offs(flash_dev, fs.offset, &info);
-	if (rc) {
-		LOG_WRN("Unable to get page info\n");
-		return;
-	}
-	fs.sector_size = info.size;
-	fs.sector_count = 3U;
+        /* define the nvs file system by settings with:
+         *	sector_size equal to the pagesize,
+         *	3 sectors
+         *	starting at FLASH_AREA_OFFSET(storage)
+         */
+        flash_dev = DEVICE_DT_GET(FLASH_NODE);
+        if (!device_is_ready(flash_dev)) {
+                LOG_WRN("Flash device %s is not ready\n", flash_dev->name);
+                return;
+        }
+        fs.offset = FLASH_AREA_OFFSET(storage);
+        rc = flash_get_page_info_by_offs(flash_dev, fs.offset, &info);
+        if (rc) {
+                LOG_WRN("Unable to get page info\n");
+                return;
+        }
+        fs.sector_size = info.size;
+        fs.sector_count = 3U;
 
-	rc = nvs_init(&fs, flash_dev->name);
-	if (rc) {
-		LOG_ERR("Flash Init failed\n");
-		return;
-	}
+        rc = nvs_init(&fs, flash_dev->name);
+        if (rc) {
+                LOG_ERR("Flash Init failed\n");
+                return;
+        }
 
         LOG_INF("Persistent Storage initialized");
 }
