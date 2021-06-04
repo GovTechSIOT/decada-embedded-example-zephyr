@@ -11,22 +11,22 @@ LOG_MODULE_REGISTER(persist_store, LOG_LEVEL_DBG);
 static struct nvs_fs fs;
 
 #define STORAGE_NODE DT_NODE_BY_FIXED_PARTITION_LABEL(storage)
-#define FLASH_NODE DT_MTD_FROM_FIXED_PARTITION(STORAGE_NODE)
+#define FLASH_NODE   DT_MTD_FROM_FIXED_PARTITION(STORAGE_NODE)
 
 typedef const int KeyName;
 
 /* List of id key used in NVS */
 namespace PersistKey
 {
-        KeyName SW_VER =                                        1;
-        KeyName SSL_CLIENT_CERTIFICATE =                        2;
-        KeyName SSL_CLIENT_CERTIFICATE_SERIAL_NUMBER =          3;
-        KeyName SSL_PRIVATE_KEY =                               4; 
-}
+KeyName SW_VER = 1;
+KeyName SSL_CLIENT_CERTIFICATE = 2;
+KeyName SSL_CLIENT_CERTIFICATE_SERIAL_NUMBER = 3;
+KeyName SSL_PRIVATE_KEY = 4;
+} // namespace PersistKey
 
 // Forward declarations of helper functions
 void write_key(KeyName key, const std::string& val);
-void write_key(KeyName key, const int val);      // override for int
+void write_key(KeyName key, const int val); // override for int
 std::string read_key(KeyName key);
 
 ////////////////////////////////////////////////////////////////////
@@ -41,38 +41,40 @@ std::string read_key(KeyName key);
  */
 void init_persist_storage(void)
 {
-        int rc = 0;
-        struct flash_pages_info info;
-        const struct device *flash_dev;
+	int rc = 0;
+	struct flash_pages_info info;
+	const struct device* flash_dev;
 
-        /* define the nvs file system by settings with:
-         *	sector_size equal to the pagesize,
-         *	3 sectors
-         *	starting at FLASH_AREA_OFFSET(storage)
-         */
-        flash_dev = DEVICE_DT_GET(FLASH_NODE);
-        if (!device_is_ready(flash_dev)) {
-                LOG_WRN("Flash device %s is not ready\n", flash_dev->name);
-                return;
-        }
-        fs.offset = FLASH_AREA_OFFSET(storage);
-        rc = flash_get_page_info_by_offs(flash_dev, fs.offset, &info);
-        if (rc) {
-                LOG_WRN("Unable to get page info\n");
-                return;
-        }
-        fs.sector_size = info.size;
-        fs.sector_count = 3U;
+	/* Flash device and storage partition defined in devicetree */
+	flash_dev = DEVICE_DT_GET(FLASH_NODE);
+	if (!device_is_ready(flash_dev)) {
+		LOG_WRN("Flash device %s is not ready\n", flash_dev->name);
+		return;
+	}
+	fs.offset = FLASH_AREA_OFFSET(storage);
+	rc = flash_get_page_info_by_offs(flash_dev, fs.offset, &info);
+	if (rc) {
+		LOG_WRN("Unable to get page info\n");
+		return;
+	}
 
-        rc = nvs_init(&fs, flash_dev->name);
-        if (rc) {
-                LOG_ERR("Flash Init failed\n");
-                return;
-        }
+	/*
+	 * NVS requires at least two sectors to work.
+	 * Exercise caution when increasing the sector count it depends on the
+	 * target's flash layout and partitions configured in the devicetree.
+	 */
+	fs.sector_size = info.size;
+	fs.sector_count = 2U;
 
-        LOG_INF("Persistent Storage initialized");
+	rc = nvs_init(&fs, flash_dev->name);
+	if (rc) {
+		LOG_ERR("Flash Init failed: %d\n", rc);
+		return;
+	}
 
-        return;
+	LOG_INF("Persistent Storage initialized");
+
+	return;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -88,12 +90,9 @@ void init_persist_storage(void)
  */
 void write_sw_ver(const std::string sw_ver)
 {
-        write_key(
-                PersistKey::SW_VER,
-                sw_ver
-        );
+	write_key(PersistKey::SW_VER, sw_ver);
 
-        return;
+	return;
 }
 
 /**
@@ -103,12 +102,9 @@ void write_sw_ver(const std::string sw_ver)
  */
 void write_client_certificate(const std::string cert)
 {
-        write_key(
-                PersistKey::SSL_CLIENT_CERTIFICATE,
-                cert
-        );
-        
-        return;
+	write_key(PersistKey::SSL_CLIENT_CERTIFICATE, cert);
+
+	return;
 }
 
 /**
@@ -118,12 +114,9 @@ void write_client_certificate(const std::string cert)
  */
 void write_client_certificate_serial_number(const std::string cert_sn)
 {
-        write_key(
-                PersistKey::SSL_CLIENT_CERTIFICATE_SERIAL_NUMBER,
-                cert_sn
-        );
+	write_key(PersistKey::SSL_CLIENT_CERTIFICATE_SERIAL_NUMBER, cert_sn);
 
-        return;
+	return;
 }
 
 /**
@@ -133,12 +126,9 @@ void write_client_certificate_serial_number(const std::string cert_sn)
  */
 void write_client_private_key(const std::string private_key)
 {
-        write_key(
-                PersistKey::SSL_PRIVATE_KEY,
-                private_key
-        );
+	write_key(PersistKey::SSL_PRIVATE_KEY, private_key);
 
-        return;
+	return;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -154,9 +144,9 @@ void write_client_private_key(const std::string private_key)
  */
 std::string read_sw_ver(void)
 {
-        std::string sw_ver = read_key(PersistKey::SW_VER);
-        
-        return sw_ver;
+	std::string sw_ver = read_key(PersistKey::SW_VER);
+
+	return sw_ver;
 }
 
 /**
@@ -166,9 +156,9 @@ std::string read_sw_ver(void)
  */
 std::string read_client_certificate(void)
 {
-        std::string client_cert = read_key(PersistKey::SSL_CLIENT_CERTIFICATE);
-        
-        return client_cert;
+	std::string client_cert = read_key(PersistKey::SSL_CLIENT_CERTIFICATE);
+
+	return client_cert;
 }
 
 /**
@@ -178,9 +168,9 @@ std::string read_client_certificate(void)
  */
 std::string read_client_certificate_serial_number(void)
 {
-        std::string sn = read_key(PersistKey::SSL_CLIENT_CERTIFICATE_SERIAL_NUMBER);
-        
-        return sn;
+	std::string sn = read_key(PersistKey::SSL_CLIENT_CERTIFICATE_SERIAL_NUMBER);
+
+	return sn;
 }
 
 /**
@@ -190,9 +180,9 @@ std::string read_client_certificate_serial_number(void)
  */
 std::string read_client_private_key(void)
 {
-        std::string priv_key = read_key(PersistKey::SSL_PRIVATE_KEY);
-        
-        return priv_key;
+	std::string priv_key = read_key(PersistKey::SSL_PRIVATE_KEY);
+
+	return priv_key;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -209,18 +199,18 @@ std::string read_client_private_key(void)
  */
 void write_key(KeyName key, const std::string& val)
 {
-        LOG_DBG("Writing key %d with value %s", key, val.c_str());
-        
-        const char* val_cstr = val.c_str();
+	LOG_DBG("Writing key %d with value %s", key, val.c_str());
 
-        int rc = nvs_write(&fs, key, val_cstr, strlen(val_cstr));
-        if (rc < 0) {
-                LOG_WRN("Failed to set key (returned %d)", rc);
-        }
-    
-        LOG_DBG("Write OK");
+	const char* val_cstr = val.c_str();
 
-        return;
+	int rc = nvs_write(&fs, key, val_cstr, strlen(val_cstr));
+	if (rc < 0) {
+		LOG_WRN("Failed to set key (returned %d)", rc);
+	}
+
+	LOG_DBG("Write OK");
+
+	return;
 }
 
 /**
@@ -231,9 +221,9 @@ void write_key(KeyName key, const std::string& val)
  */
 void write_key(KeyName key, const int val)
 {
-    write_key(key, int_to_string(val));
+	write_key(key, int_to_string(val));
 
-    return;
+	return;
 }
 
 /**
@@ -244,20 +234,21 @@ void write_key(KeyName key, const int val)
  */
 std::string read_key(KeyName key)
 {
-        LOG_DBG("Reading key %d", key);
+	LOG_DBG("Reading key %d", key);
 
-        /* buffer is one char larger to accomodate null terminator */
-        const int readout_buffer_size = 2048;
-        char* buffer[readout_buffer_size+1];
-        memset(buffer, 0, readout_buffer_size + 1);
+	/* buffer is one char larger to accomodate null terminator */
+	const int readout_buffer_size = 2048;
+	char* buffer[readout_buffer_size + 1];
+	memset(buffer, 0, readout_buffer_size + 1);
 
-        int rc = nvs_read(&fs, key, &buffer, readout_buffer_size);
-        if (rc > 0) {
-                LOG_DBG("Id: %d, Data: %s", key, (const char*)buffer);
-        } else {
-                LOG_WRN("Failed to read key (returned %d)", rc);
-                return std::string();
-        }
+	int rc = nvs_read(&fs, key, &buffer, readout_buffer_size);
+	if (rc > 0) {
+		LOG_DBG("Id: %d, Data: %s", key, (const char*)buffer);
+	}
+	else {
+		LOG_WRN("Failed to read key (returned %d)", rc);
+		return std::string();
+	}
 
-        return std::string((const char*) buffer);
+	return std::string((const char*)buffer);
 }

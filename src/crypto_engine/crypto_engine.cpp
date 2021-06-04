@@ -6,6 +6,7 @@ LOG_MODULE_REGISTER(crypto_engine, LOG_LEVEL_DBG);
 #include <mbedtls/x509_csr.h>
 #include "crypto_engine.h"
 #include "device_uuid/device_uuid.h"
+#include "persist_store/persist_store.h"
 #include "time_engine/time_engine.h"
 
 /* RSA key values */
@@ -28,16 +29,15 @@ CryptoEngine::CryptoEngine(void)
 	mbedtls_ctr_drbg_init(&ctrdrbg_ctx_);
 
 	/* Seed PRNG on start of CryptoEngine lifecycle */
-	int rc = mbedtls_ctr_drbg_seed(&ctrdrbg_ctx_, trng_entropy_func,
-				       (void*)entropy_device_,
-				       (const unsigned char*)mbedtls_pers_,
-				       strlen(mbedtls_pers_));
+	int rc = mbedtls_ctr_drbg_seed(&ctrdrbg_ctx_, trng_entropy_func, (void*)entropy_device_,
+				       (const unsigned char*)mbedtls_pers_, strlen(mbedtls_pers_));
 	if (rc) {
 		LOG_ERR("mbedtls_ctr_drbg_seed failed: -0x%04X", -rc);
 		return;
 	}
 
-	/* TODO: Try to read client certificate from PersistStore */
+	/* TODO: Requires fix for NVS */
+	// std::string client_cert = read_client_certificate();
 	std::string client_cert = "";
 	csr_ = "";
 
@@ -82,32 +82,23 @@ std::string CryptoEngine::generate_csr(void)
 
 		/* Configure CSR */
 		mbedtls_x509write_csr_init(&mbedtls_csr_request);
-		mbedtls_x509write_csr_set_md_alg(&mbedtls_csr_request,
-						 MBEDTLS_MD_SHA256);
-		mbedtls_x509write_csr_set_key_usage(
-			&mbedtls_csr_request,
-			MBEDTLS_X509_KU_DIGITAL_SIGNATURE);
+		mbedtls_x509write_csr_set_md_alg(&mbedtls_csr_request, MBEDTLS_MD_SHA256);
+		mbedtls_x509write_csr_set_key_usage(&mbedtls_csr_request, MBEDTLS_X509_KU_DIGITAL_SIGNATURE);
 		mbedtls_x509write_csr_set_key(&mbedtls_csr_request, &pk_ctx_);
 
 		/* Check the subject name for validity */
-		rc = mbedtls_x509write_csr_set_subject_name(
-			&mbedtls_csr_request, csr_subject_name.c_str());
+		rc = mbedtls_x509write_csr_set_subject_name(&mbedtls_csr_request, csr_subject_name.c_str());
 		if (rc) {
-			LOG_WRN("mbedtls_x509write_csr_set_subject_name failed: -0x%04X",
-				-rc);
+			LOG_WRN("mbedtls_x509write_csr_set_subject_name failed: -0x%04X", -rc);
 			break;
 		}
 
 		/* Write CSR in PEM format */
 		memset(mbedtls_csr_pem, 0, sizeof(mbedtls_csr_pem));
-		rc = mbedtls_x509write_csr_pem(&mbedtls_csr_request,
-					       mbedtls_csr_pem,
-					       sizeof(mbedtls_csr_pem),
-					       mbedtls_ctr_drbg_random,
-					       &ctrdrbg_ctx_);
+		rc = mbedtls_x509write_csr_pem(&mbedtls_csr_request, mbedtls_csr_pem, sizeof(mbedtls_csr_pem),
+					       mbedtls_ctr_drbg_random, &ctrdrbg_ctx_);
 		if (rc < 0) {
-			LOG_WRN("mbedtls_x509write_csr_pem failed: -0x%04X",
-				-rc);
+			LOG_WRN("mbedtls_x509write_csr_pem failed: -0x%04X", -rc);
 			break;
 		}
 
@@ -128,8 +119,7 @@ std::string CryptoEngine::generate_csr(void)
  */
 bool CryptoEngine::generate_keypair(void)
 {
-	int rc = mbedtls_rsa_gen_key(&rsa_keypair_, mbedtls_ctr_drbg_random,
-				     &ctrdrbg_ctx_, MBEDTLS_KEY_SIZE,
+	int rc = mbedtls_rsa_gen_key(&rsa_keypair_, mbedtls_ctr_drbg_random, &ctrdrbg_ctx_, MBEDTLS_KEY_SIZE,
 				     MBEDTLS_EXPONENT);
 	if (rc != 0) {
 		LOG_WRN("mbedtls_rsa_gen_key failed: -0x%04X", -rc);
@@ -146,7 +136,8 @@ bool CryptoEngine::generate_keypair(void)
 		return false;
 	}
 
-	/* TODO: Write private key to PersistStore */
+	/* TODO: Requires fix for NVS */
+	// write_client_private_key((char*)buf);
 
 	return true;
 }
@@ -158,11 +149,7 @@ bool CryptoEngine::generate_keypair(void)
  */
 std::string CryptoEngine::make_subject_name(void)
 {
-	TimeEngine time_engine;
-	const int milisec_multiplier = 1000;
-	const int64_t timestamp_ms = time_engine.get_timestamp() * milisec_multiplier;
-
-	return cert_subject_base_ + device_uuid + std::to_string(timestamp_ms);
+	return cert_subject_base_ + device_uuid + TimeEngine().get_timestamp_ms_str();
 }
 
 /**
