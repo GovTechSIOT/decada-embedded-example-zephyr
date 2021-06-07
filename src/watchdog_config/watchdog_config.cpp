@@ -6,7 +6,7 @@ LOG_MODULE_REGISTER(watchdog_config, LOG_LEVEL_DBG);
 /**
  * @brief	Get hardware device binding.
  * @author	Lau Lee Hong
- * @return      device structure
+ * @return	device structure
  */
 const struct device* watchdog_config::get_device_instance(void)
 {
@@ -22,7 +22,7 @@ const struct device* watchdog_config::get_device_instance(void)
 /**
  * @brief	Configure the watchdog configuration instance to reset after WDT_MAX_WINDOW without feed.
  * @author	Lau Lee Hong
- * @param       wdt_config      Watchdog configuration instance
+ * @param	wdt_config	Watchdog configuration instance
  */
 void watchdog_config::set_watchdog_config(wdt_timeout_cfg& wdt_config)
 {
@@ -34,7 +34,7 @@ void watchdog_config::set_watchdog_config(wdt_timeout_cfg& wdt_config)
 /**
  * @brief	Add a watchdog and raise watchdog event flag once.
  * @author	Lau Lee Hong
- * @param       wdt_config      watchdog config.
+ * @param	wdt_config 	watchdog configurations
  */
 int watchdog_config::add_watchdog(wdt_timeout_cfg& wdt_config)
 {
@@ -50,7 +50,7 @@ int watchdog_config::add_watchdog(wdt_timeout_cfg& wdt_config)
 
 /**
  * @brief	Start global hardware watchdog.
- * @details     Any calls to add_watchdog after this function is called will have no effect.
+ * @details	Any calls to add_watchdog after this function is called will have no effect.
  * @author	Lau Lee Hong
  */
 void watchdog_config::start_watchdog(void)
