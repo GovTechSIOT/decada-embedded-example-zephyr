@@ -6,6 +6,7 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #include <drivers/gpio.h>
 #include <drivers/watchdog.h>
 #include "threads.h"
+#include "watchdog_config/watchdog_config.h"
 
 #define LED0_NODE DT_ALIAS(led0)
 #define LED1_NODE DT_ALIAS(led1)
@@ -20,19 +21,6 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #define LED2   DT_GPIO_LABEL(LED2_NODE, gpios)
 #define PIN2   DT_GPIO_PIN(LED2_NODE, gpios)
 #define FLAGS2 DT_GPIO_FLAGS(LED2_NODE, gpios)
-
-#if DT_HAS_COMPAT_STATUS_OKAY(st_stm32_watchdog)
-#define WDT_NODE DT_INST(0, st_stm32_watchdog)
-#endif
-#ifndef WDT_MAX_WINDOW
-#define WDT_MAX_WINDOW 5000U
-#endif
-#ifdef WDT_NODE
-#define WDT_DEV_NAME DT_LABEL(WDT_NODE)
-#else
-#define WDT_DEV_NAME ""
-#error "Unsupported SoC and no watchdog0 alias in zephyr.dts"
-#endif
 
 void execute_behavior_manager_thread(void)
 {
@@ -61,33 +49,13 @@ void execute_behavior_manager_thread(void)
 		}
 	}
 
-	/* Initialization of Watchdog components in main.cpp */
-	int rc, wdt_channel_id;
-	const struct device* wdt;
-
-	wdt = device_get_binding(WDT_DEV_NAME);
-	if (!wdt) {
-		LOG_ERR("Cannot get WDT device");
-		return;
-	}
+	/* Initialization of Watchdog components */
+	const struct device* wdt = watchdog_config::get_device_instance();
 	wdt_timeout_cfg wdt_config = wdt_timeout_cfg();
-	wdt_config.flags = WDT_FLAG_RESET_SOC;
-	wdt_config.window.min = 0U;
-	wdt_config.window.max = WDT_MAX_WINDOW;
+	watchdog_config::set_watchdog_config(wdt_config);
+	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
 
-	wdt_channel_id = wdt_install_timeout(wdt, &wdt_config);
-	if (wdt_channel_id < 0) {
-		LOG_ERR("Watchdog install error %d", wdt_channel_id);
-		return;
-	}
-	rc = wdt_setup(wdt, WDT_OPT_PAUSE_HALTED_BY_DBG);
-	if (rc < 0) {
-		LOG_ERR("Watchdog setup error %d", rc);
-		return;
-	}
-	else {
-		LOG_INF("Watchdog successfully setup");
-	}
+	watchdog_config::start_watchdog();
 
 	while (true) {
 		/* Thread Logic */
