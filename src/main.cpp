@@ -44,6 +44,7 @@ void main(void)
 	wdt_timeout_cfg wdt_config = wdt_timeout_cfg();
 	watchdog_config::set_watchdog_config(wdt_config);
 	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
+	watchdog_config::start_watchdog();
 
 	/* Spawn communications_thread */
 	k_thread_create(&communications_thread_data, communications_thread_stack_area,
