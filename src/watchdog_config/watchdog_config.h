@@ -1,6 +1,7 @@
 #ifndef _WATCHDOG_CONFIG_H_
 #define _WATCHDOG_CONFIG_H_
 
+#include <device.h>
 #include <drivers/watchdog.h>
 
 #if DT_HAS_COMPAT_STATUS_OKAY(st_stm32_watchdog)
@@ -13,9 +14,12 @@
 #error "Unsupported SoC and no watchdog0 alias in zephyr.dts"
 #endif
 
-#ifndef WDT_MAX_WINDOW
-#define WDT_MAX_WINDOW 5000U
+#ifndef WDT_MAX_WINDOW_MS
+#define WDT_MAX_WINDOW_MS 20000U
 #endif
+
+extern struct k_poll_signal watchdog_signal;
+extern struct k_poll_event watchdog_events[];
 
 namespace watchdog_config
 {

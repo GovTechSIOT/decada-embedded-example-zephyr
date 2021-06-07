@@ -1,8 +1,12 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(watchdog_config, LOG_LEVEL_DBG);
 
-#include <device.h>
 #include "watchdog_config.h"
+
+struct k_poll_signal watchdog_signal;
+struct k_poll_event watchdog_events[] = {
+	K_POLL_EVENT_INITIALIZER(K_POLL_TYPE_SIGNAL, K_POLL_MODE_NOTIFY_ONLY, &watchdog_signal),
+};
 
 /**
  * @brief	Get hardware device binding.
@@ -29,11 +33,11 @@ void watchdog_config::set_watchdog_config(wdt_timeout_cfg& wdt_config)
 {
 	wdt_config.flags = WDT_FLAG_RESET_SOC;
 	wdt_config.window.min = 0U;
-	wdt_config.window.max = WDT_MAX_WINDOW;
+	wdt_config.window.max = WDT_MAX_WINDOW_MS;
 }
 
 /**
- * @brief	Add a watchdog.
+ * @brief	Add a watchdog and raise watchdog event flag once.
  * @author	Lau Lee Hong
  * @param       wdt_config      watchdog config.
  */
@@ -43,7 +47,9 @@ int watchdog_config::add_watchdog(wdt_timeout_cfg& wdt_config)
 	if (wdt_channel_id < 0) {
 		LOG_ERR("Watchdog install error %d", wdt_channel_id);
 	}
-
+	else {
+		k_poll_signal_raise(&watchdog_signal, 0);
+	}
 	return wdt_channel_id;
 }
 

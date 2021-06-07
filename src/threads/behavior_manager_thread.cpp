@@ -55,8 +55,6 @@ void execute_behavior_manager_thread(void)
 	watchdog_config::set_watchdog_config(wdt_config);
 	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
 
-	watchdog_config::start_watchdog();
-
 	while (true) {
 		/* Thread Logic */
 		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id], (int)led_is_on[current_led_id]);
