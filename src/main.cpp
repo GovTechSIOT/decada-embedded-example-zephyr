@@ -22,33 +22,33 @@ K_THREAD_STACK_DEFINE(behavior_manager_thread_stack_area, STACK_SIZE);
 static struct k_thread communications_thread_data;
 static struct k_thread behavior_manager_thread_data;
 
-void behavior_manager_thread(void* dummy1, void* dummy2, void* dummy3)
+void behavior_manager_thread(void* watchdog_id, void* dummy1, void* dummy2)
 {
 	ARG_UNUSED(dummy1);
 	ARG_UNUSED(dummy2);
-	ARG_UNUSED(dummy3);
 
-	execute_behavior_manager_thread();
+	execute_behavior_manager_thread(*(int*)watchdog_id);
 }
 
-void communications_thread(void* dummy1, void* dummy2, void* dummy3)
+void communications_thread(void* watchdog_id, void* dummy1, void* dummy2)
 {
 	ARG_UNUSED(dummy1);
 	ARG_UNUSED(dummy2);
-	ARG_UNUSED(dummy3);
 
-	execute_communications_thread();
+	execute_communications_thread(*(int*)watchdog_id);
 }
 
 void main(void)
 {
-	const int thread_count = 2;
-	k_poll_signal_init(&watchdog_signal);
+	/* Initialization of Watchdog components for single-channel mcu */
+	wdt_timeout_cfg wdt_config = wdt_timeout_cfg();
+	watchdog_config::set_watchdog_config(wdt_config);
+	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
 
 	/* Spawn communications_thread */
 	k_thread_create(&communications_thread_data, communications_thread_stack_area,
-			K_THREAD_STACK_SIZEOF(communications_thread_stack_area), communications_thread, NULL, NULL,
-			NULL, PRIORITY, 0, K_NO_WAIT);
+			K_THREAD_STACK_SIZEOF(communications_thread_stack_area), communications_thread,
+			(int*)wdt_channel_id, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
 	k_thread_name_set(&communications_thread_data, "communications_thread");
 #if PIN_THREADS
 	k_thread_cpu_mask_clear(&communications_thread_data);
@@ -57,8 +57,8 @@ void main(void)
 
 	/* Spawn behavior_manager_thread */
 	k_thread_create(&behavior_manager_thread_data, behavior_manager_thread_stack_area,
-			K_THREAD_STACK_SIZEOF(behavior_manager_thread_stack_area), behavior_manager_thread, NULL, NULL,
-			NULL, PRIORITY, 0, K_FOREVER);
+			K_THREAD_STACK_SIZEOF(behavior_manager_thread_stack_area), behavior_manager_thread,
+			(int*)wdt_channel_id, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
 	k_thread_name_set(&behavior_manager_thread_data, "behavior_manager_thread");
 #if PIN_THREADS
 	k_thread_cpu_mask_clear(&behavior_manager_thread_data);
@@ -68,10 +68,6 @@ void main(void)
 	/* Start threads */
 	k_thread_start(&communications_thread_data);
 	k_thread_start(&behavior_manager_thread_data);
-
-	/* Wait for all threads to add their watchdogs before starting it */
-	k_poll(watchdog_events, thread_count, K_FOREVER);
-	watchdog_config::start_watchdog();
 
 	k_sleep(K_FOREVER);
 }

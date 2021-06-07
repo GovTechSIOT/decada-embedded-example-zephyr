@@ -18,9 +18,6 @@
 #define WDT_MAX_WINDOW_MS 20000U
 #endif
 
-extern struct k_poll_signal watchdog_signal;
-extern struct k_poll_event watchdog_events[];
-
 namespace watchdog_config
 {
 const struct device* get_device_instance(void);

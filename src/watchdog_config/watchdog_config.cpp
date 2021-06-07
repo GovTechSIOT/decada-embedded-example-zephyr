@@ -3,11 +3,6 @@ LOG_MODULE_REGISTER(watchdog_config, LOG_LEVEL_DBG);
 
 #include "watchdog_config.h"
 
-struct k_poll_signal watchdog_signal;
-struct k_poll_event watchdog_events[] = {
-	K_POLL_EVENT_INITIALIZER(K_POLL_TYPE_SIGNAL, K_POLL_MODE_NOTIFY_ONLY, &watchdog_signal),
-};
-
 /**
  * @brief	Get hardware device binding.
  * @author	Lau Lee Hong
@@ -48,8 +43,7 @@ int watchdog_config::add_watchdog(wdt_timeout_cfg& wdt_config)
 		LOG_ERR("Watchdog install error %d", wdt_channel_id);
 	}
 	else {
-		LOG_INF("Watchdog timeout installation success");
-		k_poll_signal_raise(&watchdog_signal, 0);
+		LOG_INF("Watchdog timeout installation success - channel %d", wdt_channel_id);
 	}
 	return wdt_channel_id;
 }

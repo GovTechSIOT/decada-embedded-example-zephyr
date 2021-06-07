@@ -15,5 +15,5 @@
  *******************************************************************************************************/
 #include <zephyr.h>
 
-void execute_behavior_manager_thread(void);
-void execute_communications_thread(void);
+void execute_behavior_manager_thread(int watchdog_id);
+void execute_communications_thread(int watchdog_id);

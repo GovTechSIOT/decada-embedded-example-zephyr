@@ -22,15 +22,11 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #define PIN2   DT_GPIO_PIN(LED2_NODE, gpios)
 #define FLAGS2 DT_GPIO_FLAGS(LED2_NODE, gpios)
 
-void execute_behavior_manager_thread(void)
+void execute_behavior_manager_thread(int watchdog_id)
 {
 	const int sleep_time_ms = 500;
-
-	/* Initialization of Watchdog components */
 	const struct device* wdt = watchdog_config::get_device_instance();
-	wdt_timeout_cfg wdt_config = wdt_timeout_cfg();
-	watchdog_config::set_watchdog_config(wdt_config);
-	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
+	const int wdt_channel_id = watchdog_id;
 
 	/* Init GPIO LEDs */
 	const struct device* led0;
