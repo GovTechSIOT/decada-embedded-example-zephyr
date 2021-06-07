@@ -26,6 +26,12 @@ void execute_behavior_manager_thread(void)
 {
 	const int sleep_time_ms = 500;
 
+	/* Initialization of Watchdog components */
+	const struct device* wdt = watchdog_config::get_device_instance();
+	wdt_timeout_cfg wdt_config = wdt_timeout_cfg();
+	watchdog_config::set_watchdog_config(wdt_config);
+	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
+
 	/* Init GPIO LEDs */
 	const struct device* led0;
 	const struct device* led1;
@@ -48,12 +54,6 @@ void execute_behavior_manager_thread(void)
 			return;
 		}
 	}
-
-	/* Initialization of Watchdog components */
-	const struct device* wdt = watchdog_config::get_device_instance();
-	wdt_timeout_cfg wdt_config = wdt_timeout_cfg();
-	watchdog_config::set_watchdog_config(wdt_config);
-	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
 
 	while (true) {
 		/* Thread Logic */

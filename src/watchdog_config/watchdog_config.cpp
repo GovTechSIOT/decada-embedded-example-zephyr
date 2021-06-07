@@ -48,6 +48,7 @@ int watchdog_config::add_watchdog(wdt_timeout_cfg& wdt_config)
 		LOG_ERR("Watchdog install error %d", wdt_channel_id);
 	}
 	else {
+		LOG_INF("Watchdog timeout installation success");
 		k_poll_signal_raise(&watchdog_signal, 0);
 	}
 	return wdt_channel_id;

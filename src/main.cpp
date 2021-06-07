@@ -42,6 +42,7 @@ void communications_thread(void* dummy1, void* dummy2, void* dummy3)
 
 void main(void)
 {
+	const int thread_count = 2;
 	k_poll_signal_init(&watchdog_signal);
 
 	/* Spawn communications_thread */
@@ -69,7 +70,7 @@ void main(void)
 	k_thread_start(&behavior_manager_thread_data);
 
 	/* Wait for all threads to add their watchdogs before starting it */
-	k_poll(watchdog_events, 1, K_FOREVER);
+	k_poll(watchdog_events, thread_count, K_FOREVER);
 	watchdog_config::start_watchdog();
 
 	k_sleep(K_FOREVER);
