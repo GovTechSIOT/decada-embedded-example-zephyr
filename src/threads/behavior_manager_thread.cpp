@@ -1,8 +1,12 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 
+#include <zephyr.h>
+#include <device.h>
 #include <drivers/gpio.h>
+#include <drivers/watchdog.h>
 #include "threads.h"
+#include "watchdog_config/watchdog_config.h"
 
 #define LED0_NODE DT_ALIAS(led0)
 #define LED1_NODE DT_ALIAS(led1)
@@ -18,9 +22,11 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #define PIN2   DT_GPIO_PIN(LED2_NODE, gpios)
 #define FLAGS2 DT_GPIO_FLAGS(LED2_NODE, gpios)
 
-void execute_behavior_manager_thread(void)
+void execute_behavior_manager_thread(int watchdog_id)
 {
 	const int sleep_time_ms = 500;
+	const struct device* wdt = watchdog_config::get_device_instance();
+	const int wdt_channel_id = watchdog_id;
 
 	/* Init GPIO LEDs */
 	const struct device* led0;
@@ -39,8 +45,7 @@ void execute_behavior_manager_thread(void)
 	int flags_arr[] = { FLAGS0, FLAGS1, FLAGS2 };
 	int current_led_id = 0;
 	for (int i = 0; i < 3; i++) {
-		ret = gpio_pin_configure(led_arr[i], pin_arr[i],
-					 GPIO_OUTPUT_ACTIVE | flags_arr[i]);
+		ret = gpio_pin_configure(led_arr[i], pin_arr[i], GPIO_OUTPUT_ACTIVE | flags_arr[i]);
 		if (ret < 0) {
 			return;
 		}
@@ -48,11 +53,11 @@ void execute_behavior_manager_thread(void)
 
 	while (true) {
 		/* Thread Logic */
-		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id],
-			     (int)led_is_on[current_led_id]);
+		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id], (int)led_is_on[current_led_id]);
 		led_is_on[current_led_id] = !led_is_on[current_led_id];
 		current_led_id = (current_led_id + 1) % 3;
 
+		wdt_feed(wdt, wdt_channel_id);
 		k_msleep(sleep_time_ms);
 	}
 }

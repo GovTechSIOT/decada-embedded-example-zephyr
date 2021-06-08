@@ -11,10 +11,13 @@ LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 #include "threads.h"
 #include "time_engine/time_manager.h"
 #include "tls_certs.h"
+#include "watchdog_config/watchdog_config.h"
 
-void execute_communications_thread(void)
+void execute_communications_thread(int watchdog_id)
 {
 	const int sleep_time_ms = 500;
+	const struct device* wdt = watchdog_config::get_device_instance();
+	const int wdt_channel_id = watchdog_id;
 
 	k_poll_signal_init(&wifi_signal);
 
@@ -55,6 +58,7 @@ void execute_communications_thread(void)
 		}
 		counter++;
 
+		wdt_feed(wdt, wdt_channel_id);
 		k_msleep(sleep_time_ms);
 	}
 }
