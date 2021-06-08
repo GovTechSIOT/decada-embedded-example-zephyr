@@ -15,7 +15,7 @@
 #endif
 
 #ifndef WDT_MAX_WINDOW_MS
-#define WDT_MAX_WINDOW_MS 20000U
+#define WDT_MAX_WINDOW_MS (20 * MSEC_PER_SEC)
 #endif
 
 namespace watchdog_config
