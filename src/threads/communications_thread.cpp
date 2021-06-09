@@ -42,23 +42,14 @@ void execute_communications_thread(int watchdog_id)
 	// init_persist_storage();
 	// write_sw_ver("R1.0.0");
 
-	//DecadaManager decada_manager;
-	//decada_manager.connect();
-
-	int counter = 0;
+	DecadaManager decada_manager;
+	decada_manager.connect();
 
 	/* TODO: Requires fix for NVS */
 	// std::string sw_ver = read_sw_ver();
 	// LOG_DBG("sw_ver (read from flash): %s", sw_ver.c_str());
 
 	while (true) {
-		/* Periodically print Unix epoch timestamp */
-		if (counter >= 120) {
-			LOG_DBG("Timestamp: %" PRId64, time_manager.get_timestamp());
-			counter = 0;
-		}
-		counter++;
-
 		/* Try receiving data from BehaviorManager Thread via Mailbox */
 		struct k_mbox_msg recv_msg;
 		char mailbox_buf[mail_buf_size];
