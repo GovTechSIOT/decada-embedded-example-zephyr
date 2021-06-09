@@ -21,6 +21,7 @@ K_THREAD_STACK_DEFINE(communications_thread_stack_area, STACK_SIZE * 8);
 K_THREAD_STACK_DEFINE(behavior_manager_thread_stack_area, STACK_SIZE);
 static struct k_thread communications_thread_data;
 static struct k_thread behavior_manager_thread_data;
+struct k_mbox data_mailbox;
 
 void behavior_manager_thread(void* watchdog_id, void* dummy1, void* dummy2)
 {
@@ -45,6 +46,7 @@ void main(void)
 	watchdog_config::set_watchdog_config(wdt_config);
 	int wdt_channel_id = watchdog_config::add_watchdog(wdt_config);
 	watchdog_config::start_watchdog();
+	k_mbox_init(&data_mailbox);
 
 	/* Spawn communications_thread */
 	k_thread_create(&communications_thread_data, communications_thread_stack_area,

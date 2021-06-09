@@ -18,6 +18,7 @@ void execute_communications_thread(int watchdog_id)
 	const int sleep_time_ms = 500;
 	const struct device* wdt = watchdog_config::get_device_instance();
 	const int wdt_channel_id = watchdog_id;
+	const int mail_buf_size = 128;
 
 	k_poll_signal_init(&wifi_signal);
 
@@ -59,21 +60,21 @@ void execute_communications_thread(int watchdog_id)
 		counter++;
 
 		/* Try receiving data from BehaviorManager Thread via Mailbox */
-		// struct k_mbox_msg recv_msg;
-		// char mailbox_buf[mail_size];
-		// recv_msg.info = mail_size;
-		// recv_msg.size = mail_size;
-		// recv_msg.rx_source_thread = K_ANY;
-		// k_mbox_get(&data_mailbox, &recv_msg, mailbox_buf, K_NO_WAIT);
-		// char* d = static_cast<char*>(recv_msg.tx_data);
-		// size_t len = *static_cast<char*>(recv_msg.tx_data);
-		// std::string data(d, len);
-		// free(recv_msg.tx_data);
-		// if (recv_msg.size != recv_msg.info) {
-		// 	LOG_WRN("Mail data corrupted during transfer");
-		// 	LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);
-		// }
-		// LOG_DBG("received from mail: %s", data.c_str());
+		struct k_mbox_msg recv_msg;
+		char mailbox_buf[mail_buf_size];
+		recv_msg.info = mail_buf_size;
+		recv_msg.size = mail_buf_size;
+		recv_msg.rx_source_thread = K_ANY;
+		k_mbox_get(&data_mailbox, &recv_msg, mailbox_buf, K_FOREVER);
+		char* d = static_cast<char*>(recv_msg.tx_data);
+		size_t len = *static_cast<char*>(recv_msg.tx_data);
+		std::string data(d, len);
+		free(recv_msg.tx_data);
+		if (recv_msg.size != recv_msg.info) {
+			LOG_WRN("Mail data corrupted during transfer");
+			LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);
+		}
+		LOG_DBG("received from mail: %s", data.c_str());
 
 		wdt_feed(wdt, wdt_channel_id);
 		k_msleep(sleep_time_ms);

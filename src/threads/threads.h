@@ -13,7 +13,14 @@
  *
  * See the License for the specific language governing permissions and limitations under the License.
  *******************************************************************************************************/
+#ifndef _THREADS_H_
+#define _THREADS_H_
+
 #include <zephyr.h>
+
+extern struct k_mbox data_mailbox;
 
 void execute_behavior_manager_thread(int watchdog_id);
 void execute_communications_thread(int watchdog_id);
+
+#endif // _THREADS_H_
