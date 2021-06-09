@@ -5,7 +5,9 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #include <device.h>
 #include <drivers/gpio.h>
 #include <drivers/watchdog.h>
+#include "conversions/conversions.h"
 #include "threads.h"
+#include "time_engine/time_engine.h"
 #include "watchdog_config/watchdog_config.h"
 
 #define LED0_NODE DT_ALIAS(led0)
@@ -22,9 +24,11 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #define PIN2   DT_GPIO_PIN(LED2_NODE, gpios)
 #define FLAGS2 DT_GPIO_FLAGS(LED2_NODE, gpios)
 
+K_MBOX_DEFINE(data_mailbox);
+
 void execute_behavior_manager_thread(int watchdog_id)
 {
-	const int sleep_time_ms = 500;
+	const int sleep_time_ms = 5000;
 	const struct device* wdt = watchdog_config::get_device_instance();
 	const int wdt_channel_id = watchdog_id;
 
@@ -51,11 +55,43 @@ void execute_behavior_manager_thread(int watchdog_id)
 		}
 	}
 
+	TimeEngine pseudo_sensor;
+	std::string sensor_data;
+	const int mail_size = 128;
+
 	while (true) {
 		/* Thread Logic */
 		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id], (int)led_is_on[current_led_id]);
 		led_is_on[current_led_id] = !led_is_on[current_led_id];
 		current_led_id = (current_led_id + 1) % 3;
+
+		/* Read pseudosensor data */
+		sensor_data = pseudo_sensor.get_timestamp_s_str();
+		LOG_DBG("sensor_data: %s", sensor_data.c_str());
+
+		/* Populate Mailbox and send data to CommunicationsThread*/
+		struct k_mbox_msg send_msg;
+		send_msg.info = sensor_data.length();
+		send_msg.size = sensor_data.length();
+		send_msg.tx_data = StringToChar(sensor_data);
+		send_msg.tx_target_thread = K_ANY;
+		k_mbox_async_put(&data_mailbox, &send_msg, NULL);
+
+		struct k_mbox_msg recv_msg;
+		char mailbox_buf[mail_size];
+		recv_msg.info = mail_size;
+		recv_msg.size = mail_size;
+		recv_msg.rx_source_thread = K_ANY;
+		k_mbox_get(&data_mailbox, &recv_msg, mailbox_buf, K_NO_WAIT);
+		char* d = static_cast<char*>(recv_msg.tx_data);
+		size_t len = *static_cast<char*>(recv_msg.tx_data);
+		std::string data(d, len);
+		free(recv_msg.tx_data);
+		if (recv_msg.size != recv_msg.info) {
+			LOG_WRN("Mail data corrupted during transfer");
+			LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);
+		}
+		LOG_DBG("received from mail: %s", data.c_str());
 
 		wdt_feed(wdt, wdt_channel_id);
 		k_msleep(sleep_time_ms);

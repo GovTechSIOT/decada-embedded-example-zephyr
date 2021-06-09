@@ -1,6 +1,7 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(conversions, LOG_LEVEL_DBG);
 
+#include <cstring>
 #include <sstream>
 #include <mbedtls/sha256.h>
 #include "conversions.h"
@@ -41,4 +42,20 @@ std::string int_to_string(int v)
 	std::ostringstream oss;
 	oss << v;
 	return oss.str();
+}
+
+/**
+ *  @brief  Converts a C++ string to C-string; Use free() to release mem after copying the content.
+ *  @author Lau Lee Hong
+ *  @param  str C++ string
+ *  @return Pointer to a null-terminated array of character
+ */
+char* StringToChar(const std::string& str)
+{
+	char* buffer = (char*)std::malloc(std::strlen(str.c_str()) + 1);
+	if (buffer != NULL) {
+		std::strcpy(buffer, str.c_str());
+	}
+
+	return buffer;
 }

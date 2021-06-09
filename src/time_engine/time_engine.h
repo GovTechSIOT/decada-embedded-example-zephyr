@@ -8,6 +8,7 @@ class TimeEngine
 {
 public:
 	int64_t get_timestamp(void);
+	std::string get_timestamp_s_str(void);
 	std::string get_timestamp_ms_str(void);
 
 private:

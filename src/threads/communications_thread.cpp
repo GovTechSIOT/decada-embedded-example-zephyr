@@ -41,8 +41,8 @@ void execute_communications_thread(int watchdog_id)
 	// init_persist_storage();
 	// write_sw_ver("R1.0.0");
 
-	DecadaManager decada_manager;
-	decada_manager.connect();
+	//DecadaManager decada_manager;
+	//decada_manager.connect();
 
 	int counter = 0;
 
@@ -57,6 +57,23 @@ void execute_communications_thread(int watchdog_id)
 			counter = 0;
 		}
 		counter++;
+
+		/* Try receiving data from BehaviorManager Thread via Mailbox */
+		// struct k_mbox_msg recv_msg;
+		// char mailbox_buf[mail_size];
+		// recv_msg.info = mail_size;
+		// recv_msg.size = mail_size;
+		// recv_msg.rx_source_thread = K_ANY;
+		// k_mbox_get(&data_mailbox, &recv_msg, mailbox_buf, K_NO_WAIT);
+		// char* d = static_cast<char*>(recv_msg.tx_data);
+		// size_t len = *static_cast<char*>(recv_msg.tx_data);
+		// std::string data(d, len);
+		// free(recv_msg.tx_data);
+		// if (recv_msg.size != recv_msg.info) {
+		// 	LOG_WRN("Mail data corrupted during transfer");
+		// 	LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);
+		// }
+		// LOG_DBG("received from mail: %s", data.c_str());
 
 		wdt_feed(wdt, wdt_channel_id);
 		k_msleep(sleep_time_ms);
