@@ -13,6 +13,11 @@ LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 #include "tls_certs.h"
 #include "watchdog_config/watchdog_config.h"
 
+struct k_poll_signal decada_connect_ok_signal;
+struct k_poll_event decada_connect_ok_events[] = {
+	K_POLL_EVENT_INITIALIZER(K_POLL_TYPE_SIGNAL, K_POLL_MODE_NOTIFY_ONLY, &decada_connect_ok_signal),
+};
+
 void execute_communications_thread(int watchdog_id)
 {
 	const int sleep_time_ms = 500;
@@ -21,6 +26,7 @@ void execute_communications_thread(int watchdog_id)
 	const int mail_buf_size = 128;
 
 	k_poll_signal_init(&wifi_signal);
+	k_poll_signal_init(&decada_connect_ok_signal);
 
 	/* Setup WiFi connection */
 	wifi_mgmt_event_init();
@@ -44,6 +50,9 @@ void execute_communications_thread(int watchdog_id)
 
 	DecadaManager decada_manager;
 	decada_manager.connect();
+
+	/* Signal other threads that DECADA connection is up */
+	k_poll_signal_raise(&decada_connect_ok_signal, 0);
 
 	/* TODO: Requires fix for NVS */
 	// std::string sw_ver = read_sw_ver();

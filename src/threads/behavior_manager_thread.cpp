@@ -41,7 +41,7 @@ void execute_behavior_manager_thread(int watchdog_id)
 	if (led0 == NULL || led1 == NULL || led2 == NULL) {
 		return;
 	}
-	bool led_is_on[] = { true, true, true };
+	bool led_is_on[] = { false, false, false };
 	const struct device* led_arr[] = { led0, led1, led2 };
 	int pin_arr[] = { PIN0, PIN1, PIN2 };
 	int flags_arr[] = { FLAGS0, FLAGS1, FLAGS2 };
@@ -57,6 +57,9 @@ void execute_behavior_manager_thread(int watchdog_id)
 	std::string sensor_data;
 
 	while (true) {
+		/* Wait for DECADA connection to be up before continuing */
+		k_poll(decada_connect_ok_events, 1, K_FOREVER);
+
 		/* Moving LEDs example*/
 		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id], (int)led_is_on[current_led_id]);
 		led_is_on[current_led_id] = !led_is_on[current_led_id];

@@ -19,6 +19,8 @@
 #include <zephyr.h>
 
 extern struct k_mbox data_mailbox;
+extern struct k_poll_signal decada_connect_ok_signal;
+extern struct k_poll_event decada_connect_ok_events[];
 
 void execute_behavior_manager_thread(int watchdog_id);
 void execute_communications_thread(int watchdog_id);
