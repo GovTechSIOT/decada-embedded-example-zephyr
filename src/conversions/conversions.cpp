@@ -1,7 +1,6 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(conversions, LOG_LEVEL_DBG);
 
-#include <cstring>
 #include <sstream>
 #include <mbedtls/sha256.h>
 #include "conversions.h"

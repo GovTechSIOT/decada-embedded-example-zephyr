@@ -70,8 +70,7 @@ void execute_behavior_manager_thread(int watchdog_id)
 
 		/* Populate Mailbox and send data to CommunicationsThread*/
 		char* buf = (char*)malloc(sensor_data.size() + 1);
-		const char* temp = sensor_data.c_str();
-		memcpy(buf, temp, sensor_data.size() + 1);
+		memcpy(buf, sensor_data.c_str(), sensor_data.size() + 1);
 		struct k_mbox_msg send_msg;
 		send_msg.info = sensor_data.length();
 		send_msg.size = sensor_data.length();
