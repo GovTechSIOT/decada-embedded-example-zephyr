@@ -6,6 +6,7 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 #include <drivers/gpio.h>
 #include <drivers/watchdog.h>
 #include "threads.h"
+#include "time_engine/time_engine.h"
 #include "watchdog_config/watchdog_config.h"
 
 #define LED0_NODE DT_ALIAS(led0)
@@ -24,7 +25,7 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 
 void execute_behavior_manager_thread(int watchdog_id)
 {
-	const int sleep_time_ms = 500;
+	const int sleep_time_ms = 5000;
 	const struct device* wdt = watchdog_config::get_device_instance();
 	const int wdt_channel_id = watchdog_id;
 
@@ -39,7 +40,7 @@ void execute_behavior_manager_thread(int watchdog_id)
 	if (led0 == NULL || led1 == NULL || led2 == NULL) {
 		return;
 	}
-	bool led_is_on[] = { true, true, true };
+	bool led_is_on[] = { false, false, false };
 	const struct device* led_arr[] = { led0, led1, led2 };
 	int pin_arr[] = { PIN0, PIN1, PIN2 };
 	int flags_arr[] = { FLAGS0, FLAGS1, FLAGS2 };
@@ -51,11 +52,31 @@ void execute_behavior_manager_thread(int watchdog_id)
 		}
 	}
 
+	TimeEngine pseudo_sensor;
+	std::string sensor_data;
+
 	while (true) {
-		/* Thread Logic */
+		/* Wait for DECADA connection to be up before continuing */
+		k_poll(decada_connect_ok_events, 1, K_FOREVER);
+
+		/* Moving LEDs example*/
 		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id], (int)led_is_on[current_led_id]);
 		led_is_on[current_led_id] = !led_is_on[current_led_id];
 		current_led_id = (current_led_id + 1) % 3;
+
+		/* Read pseudosensor data */
+		sensor_data = pseudo_sensor.get_timestamp_s_str();
+		LOG_DBG("sensor_data: %s", sensor_data.c_str());
+
+		/* Populate Mailbox and send data to CommunicationsThread*/
+		char* buf = (char*)malloc(sensor_data.size() + 1);
+		memcpy(buf, sensor_data.c_str(), sensor_data.size() + 1);
+		struct k_mbox_msg send_msg;
+		send_msg.info = sensor_data.length();
+		send_msg.size = sensor_data.length();
+		send_msg.tx_data = buf;
+		send_msg.tx_target_thread = K_ANY;
+		k_mbox_async_put(&data_mailbox, &send_msg, NULL);
 
 		wdt_feed(wdt, wdt_channel_id);
 		k_msleep(sleep_time_ms);
