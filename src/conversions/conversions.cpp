@@ -43,18 +43,3 @@ std::string int_to_string(int v)
 	oss << v;
 	return oss.str();
 }
-
-/**
- *  @brief  Converts a C++ string to C-string; Use free() to release mem after copying the content.
- *  @author Lau Lee Hong
- *  @param  str C++ string
- *  @return Pointer to a null-terminated array of character
- */
-char* StringToChar(const std::string& str)
-{
-	char* buf = (char*)malloc(str.size() + 1);
-	const char* temp = str.c_str();
-	memcpy(buf, temp, str.size() + 1);
-
-	return buf;
-}

@@ -59,12 +59,13 @@ void execute_communications_thread(int watchdog_id)
 	// LOG_DBG("sw_ver (read from flash): %s", sw_ver.c_str());
 
 	while (true) {
-		/* Try receiving data from BehaviorManager Thread via Mailbox */
 		struct k_mbox_msg recv_msg;
 		char mailbox_buf[mail_buf_size];
 		recv_msg.info = mail_buf_size;
 		recv_msg.size = mail_buf_size;
 		recv_msg.rx_source_thread = K_ANY;
+
+		/* Try receiving data from BehaviorManager Thread via Mailbox */
 		k_mbox_get(&data_mailbox, &recv_msg, mailbox_buf, K_FOREVER);
 		char* d = static_cast<char*>(recv_msg.tx_data);
 		size_t len = *static_cast<char*>(recv_msg.tx_data);
