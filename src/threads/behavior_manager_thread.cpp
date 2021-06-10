@@ -68,13 +68,17 @@ void execute_behavior_manager_thread(int watchdog_id)
 		sensor_data = pseudo_sensor.get_timestamp_s_str();
 		LOG_DBG("sensor_data: %s", sensor_data.c_str());
 
-		/* Populate Mailbox and send data to CommunicationsThread*/
-		char* buf = (char*)malloc(sensor_data.size() + 1);
-		memcpy(buf, sensor_data.c_str(), sensor_data.size() + 1);
+		/* Data is placed on the heap and null-terminated */
+		int buf_len = sensor_data.size() + 1;
+		char* buf = (char*)malloc(buf_len);
+		memcpy(buf, sensor_data.c_str(), buf_len);
+
+		/* Populate Mailbox and send data to CommunicationsThread */
 		struct k_mbox_msg send_msg;
-		send_msg.info = sensor_data.length();
-		send_msg.size = sensor_data.length();
+		send_msg.info = buf_len;
+		send_msg.size = buf_len;
 		send_msg.tx_data = buf;
+		send_msg.tx_block.data = NULL;
 		send_msg.tx_target_thread = K_ANY;
 		k_mbox_async_put(&data_mailbox, &send_msg, NULL);
 
