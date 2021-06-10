@@ -67,9 +67,7 @@ void execute_communications_thread(int watchdog_id)
 
 		/* Try receiving data from BehaviorManager Thread via Mailbox */
 		k_mbox_get(&data_mailbox, &recv_msg, mailbox_buf, K_FOREVER);
-		char* d = static_cast<char*>(recv_msg.tx_data);
-		std::string data(d, recv_msg.size);
-		free(recv_msg.tx_data);
+		std::string data(mailbox_buf, recv_msg.size);
 		if (recv_msg.size != recv_msg.info) {
 			LOG_WRN("Mail data corrupted during transfer");
 			LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);

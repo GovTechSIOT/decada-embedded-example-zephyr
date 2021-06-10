@@ -69,12 +69,10 @@ void execute_behavior_manager_thread(int watchdog_id)
 		LOG_DBG("sensor_data: %s", sensor_data.c_str());
 
 		/* Populate Mailbox and send data to CommunicationsThread*/
-		char* buf = (char*)malloc(sensor_data.size() + 1);
-		memcpy(buf, sensor_data.c_str(), sensor_data.size() + 1);
 		struct k_mbox_msg send_msg;
 		send_msg.info = sensor_data.length();
 		send_msg.size = sensor_data.length();
-		send_msg.tx_data = buf;
+		send_msg.tx_data = (char*)sensor_data.c_str();
 		send_msg.tx_target_thread = K_ANY;
 		k_mbox_async_put(&data_mailbox, &send_msg, NULL);
 
