@@ -52,10 +52,9 @@ std::string int_to_string(int v)
  */
 char* StringToChar(const std::string& str)
 {
-	char* buffer = (char*)std::malloc(std::strlen(str.c_str()) + 1);
-	if (buffer != NULL) {
-		std::strcpy(buffer, str.c_str());
-	}
+	char* buf = (char*)malloc(str.size() + 1);
+	const char* temp = str.c_str();
+	memcpy(buf, temp, str.size() + 1);
 
-	return buffer;
+	return buf;
 }
