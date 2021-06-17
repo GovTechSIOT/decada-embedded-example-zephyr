@@ -34,7 +34,7 @@ typedef struct {
 class CryptoEngine
 {
 public:
-	CryptoEngine(void);
+	CryptoEngine(const int channel_id);
 	virtual ~CryptoEngine(void);
 
 	static bool get_cert_info(char* buf, size_t size, const mbedtls_x509_crt* crt);
@@ -42,6 +42,9 @@ public:
 protected:
 	mbedtls_pk_context pk_ctx_;
 	std::string csr_;
+
+	const struct device* wdt_;
+	const int wdt_channel_id_;
 
 private:
 	bool generate_keypair(void);

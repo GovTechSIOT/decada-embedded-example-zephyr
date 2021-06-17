@@ -16,7 +16,12 @@
 #ifndef _TLS_CERTS_H_
 #define _TLS_CERTS_H_
 
-#define CA_CERTS_TAG 1
+#define CA_CERTS_TAG	 1
+#define CLIENT_CERTS_TAG 2
+
+/* Session variables */
+extern std::string client_cert;
+extern std::string client_key;
 
 /* CA Certificates */
 const char CA_CERTS[] =

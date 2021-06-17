@@ -41,10 +41,6 @@
  *      DECADA Credentials
  */
 
-// Root URL to access DECADA cloud API
-#define USER_CONFIG_DECADA_API_URL \
-        ("https://ag.decada.gov.sg")
-
 // Organization Unit ID for DECADA cloud
 #define USER_CONFIG_DECADA_OU_ID \
         ("")

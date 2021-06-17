@@ -17,20 +17,23 @@
 #define _DECADA_MANAGER_H_
 
 #include <string>
-#include "ArduinoJson.hpp"
 #include "crypto_engine/crypto_engine.h"
+#include "networking/mqtt/mqtt_client.h"
 #include "time_engine/time_engine.h"
 #include "user_config.h"
 
-class DecadaManager : public CryptoEngine
+class DecadaManager : public CryptoEngine, public MqttClient
 {
 public:
-	DecadaManager(void);
+	DecadaManager(const int channel_id);
 
 	bool connect(void);
 
 private:
 	csr_sign_resp sign_csr(std::string csr) override;
+
+	void subscription_callback(uint8_t* data, int len) override;
+	void send_service_response(std::string message_id, std::string method, std::string response);
 
 	/* DECADA Provisioning */
 	std::string get_access_token(void);
@@ -40,7 +43,6 @@ private:
 
 	std::string device_secret_;
 
-	const std::string decada_api_url_ = USER_CONFIG_DECADA_API_URL;
 	const std::string decada_ou_id_ = USER_CONFIG_DECADA_OU_ID;
 	const std::string decada_product_key_ = USER_CONFIG_DECADA_PRODUCT_KEY;
 	const std::string decada_access_key_ = USER_CONFIG_DECADA_ACCESS_KEY;

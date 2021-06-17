@@ -1,10 +1,13 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 
+#include "ArduinoJson.hpp"
 #include <zephyr.h>
 #include <device.h>
 #include <drivers/gpio.h>
 #include <drivers/watchdog.h>
+#include "conversions/conversions.h"
+#include "device_uuid/device_uuid.h"
 #include "threads.h"
 #include "time_engine/time_engine.h"
 #include "watchdog_config/watchdog_config.h"
@@ -25,9 +28,12 @@ LOG_MODULE_REGISTER(behavior_manager_thread, LOG_LEVEL_DBG);
 
 void execute_behavior_manager_thread(int watchdog_id)
 {
-	const int sleep_time_ms = 5000;
+	const int sleep_time_ms = 10 * MSEC_PER_SEC;
 	const struct device* wdt = watchdog_config::get_device_instance();
 	const int wdt_channel_id = watchdog_id;
+
+	const std::string decada_protocol_version = "1.0";
+	const std::string decada_method_of_device = "thing.measurepoint.post";
 
 	/* Init GPIO LEDs */
 	const struct device* led0;
@@ -55,23 +61,36 @@ void execute_behavior_manager_thread(int watchdog_id)
 	TimeEngine pseudo_sensor;
 	std::string sensor_data;
 
-	while (true) {
-		/* Wait for DECADA connection to be up before continuing */
-		k_poll(decada_connect_ok_events, 1, K_FOREVER);
+	/* Wait for DECADA connection to be up before continuing */
+	k_poll(decada_connect_ok_events, 1, K_FOREVER);
 
+	while (true) {
 		/* Moving LEDs example*/
 		gpio_pin_set(led_arr[current_led_id], pin_arr[current_led_id], (int)led_is_on[current_led_id]);
 		led_is_on[current_led_id] = !led_is_on[current_led_id];
 		current_led_id = (current_led_id + 1) % 3;
 
-		/* Read pseudosensor data */
+		/* Use timestamp as a dummy sensor reading */
 		sensor_data = pseudo_sensor.get_timestamp_s_str();
 		LOG_DBG("sensor_data: %s", sensor_data.c_str());
 
-		/* Data is placed on the heap and null-terminated */
-		int buf_len = sensor_data.size() + 1;
+		/* Format data into DECADA-compliant JSON */
+		ArduinoJson::DynamicJsonDocument params(64);
+		params["measurepoints"]["chronos_s"] = sensor_data;
+
+		ArduinoJson::DynamicJsonDocument json(512);
+		json["id"] = device_uuid;
+		json["version"] = decada_protocol_version;
+		json["params"] = params;
+		json["method"] = decada_method_of_device;
+
+		std::string json_body;
+		ArduinoJson::serializeJson(json, json_body);
+
+		/* Data is placed on the heap */
+		int buf_len = json_body.size();
 		char* buf = (char*)malloc(buf_len);
-		memcpy(buf, sensor_data.c_str(), buf_len);
+		memcpy(buf, json_body.c_str(), buf_len);
 
 		/* Populate Mailbox and send data to CommunicationsThread */
 		struct k_mbox_msg send_msg;

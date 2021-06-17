@@ -4,18 +4,16 @@ LOG_MODULE_REGISTER(dns_lookup, LOG_LEVEL_DBG);
 #include <net/socket.h>
 #include "dns_lookup.h"
 
-#define DNS_TIMEOUT	 (10 * MSEC_PER_SEC)
+#define DNS_TIMEOUT	 (4 * MSEC_PER_SEC)
 #define DNS_MAX_ATTEMPTS (3)
 
-void dns_result_cb(enum dns_resolve_status status, struct dns_addrinfo* info,
-		   void* user_data);
+void dns_result_cb(enum dns_resolve_status status, struct dns_addrinfo* info, void* user_data);
 
 DnsLookup::DnsLookup(std::string domain_name) : query_(domain_name)
 {
 	/* Setup signal and events */
 	k_poll_signal_init(&resolved_signal_);
-	resolved_events_[0] = K_POLL_EVENT_INITIALIZER(
-		K_POLL_TYPE_SIGNAL, K_POLL_MODE_NOTIFY_ONLY, &resolved_signal_);
+	resolved_events_[0] = K_POLL_EVENT_INITIALIZER(K_POLL_TYPE_SIGNAL, K_POLL_MODE_NOTIFY_ONLY, &resolved_signal_);
 
 	/* IPv4 query */
 	dns_ipv4_lookup();
@@ -30,8 +28,7 @@ DnsLookup::DnsLookup(std::string domain_name) : query_(domain_name)
 struct sockaddr_in DnsLookup::get_sockaddr_in(void)
 {
 	k_poll(resolved_events_, 1, K_FOREVER);
-	struct sockaddr_in* addr =
-		(struct sockaddr_in*)&resolved_addrinfo_.ai_addr;
+	struct sockaddr_in* addr = (struct sockaddr_in*)&resolved_addrinfo_.ai_addr;
 	return *addr;
 }
 
@@ -78,8 +75,7 @@ void DnsLookup::set_resolved(struct dns_addrinfo info)
  * @param	user_data	User data provided in dns_get_addr_info
  * @note	This function can be called multiple times with DNS_EAI_INPROGRESS for each address resolved
  */
-void dns_result_cb(enum dns_resolve_status status, struct dns_addrinfo* info,
-		   void* user_data)
+void dns_result_cb(enum dns_resolve_status status, struct dns_addrinfo* info, void* user_data)
 {
 	/* user_data contains the DnsLookup calling context */
 	DnsLookup* dns_lookup = (DnsLookup*)user_data;
@@ -133,17 +129,19 @@ void DnsLookup::dns_ipv4_lookup(void)
 		return;
 	}
 
-	int rc = dns_get_addr_info(query_.c_str(), DNS_QUERY_TYPE_A, NULL,
-				   dns_result_cb, (void*)this, DNS_TIMEOUT);
+	int rc = dns_get_addr_info(query_.c_str(), DNS_QUERY_TYPE_A, NULL, dns_result_cb, (void*)this, DNS_TIMEOUT);
 	attempt_++;
 
 	if (rc < 0) {
 		LOG_WRN("Failed to start DNS query: %d", rc);
+
+		/* Try again after 100ms */
+		k_msleep(100);
 		dns_ipv4_lookup();
+
 		return;
 	}
 	else {
-		LOG_INF("Resolving hostname %s... (Attempt %d/%d)",
-			query_.c_str(), attempt_, DNS_MAX_ATTEMPTS);
+		LOG_INF("Resolving hostname %s... (Attempt %d/%d)", query_.c_str(), attempt_, DNS_MAX_ATTEMPTS);
 	}
 }
