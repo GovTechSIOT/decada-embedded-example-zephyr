@@ -8,7 +8,7 @@ LOG_MODULE_REGISTER(time_engine, LOG_LEVEL_DBG);
 #include "user_config.h"
 
 /**
- * @brief	Get Unix epoch timestamp
+ * @brief	Get Unix epoch timestamp.
  * @author	Lee Tze Han
  * @return	Current timestamp
  */
@@ -21,7 +21,20 @@ int64_t TimeEngine::get_timestamp(void)
 }
 
 /**
- * @brief	Get string representing Unix epoch timestamp in milliseconds
+ * @brief	Get string representing Unix epoch timestamp in seconds.
+ * @author	Lau Lee Hong
+ * @return	Current timestamp
+ */
+std::string TimeEngine::get_timestamp_s_str(void)
+{
+	std::ostringstream ss;
+	ss << get_timestamp();
+
+	return ss.str();
+}
+
+/**
+ * @brief	Get string representing Unix epoch timestamp in milliseconds.
  * @author	Lee Tze Han
  * @return	Current timestamp
  * @note	This does not provide millisecond resolution but pads the timestamp for convenience
@@ -39,7 +52,7 @@ std::string TimeEngine::get_timestamp_ms_str(void)
 #include <stm32_ll_rtc.h>
 
 /**
- * @brief	Get datetime from RTC
+ * @brief	Get datetime from RTC.
  * @author	Lee Tze Han
  * @param	timestamp_ptr	Pointer to store Unix epoch timestamp. Set to NULL if unneeded
  * @return	tm struct containing time in broken-down representation
@@ -119,7 +132,7 @@ struct tm TimeEngine::get_rtc_datetime(int64_t* timestamp_ptr)
 }
 
 /**
- * @brief	Set the current timestamp of the RTC
+ * @brief	Set the current timestamp of the RTC.
  * @author	Lee Tze Han
  * @param	timestamp    Unix epoch timestamp (seconds since 00:00:00 UTC 1st Jan 1970)
  * @note        Updating the RTC using this function loses the millisecond resolution

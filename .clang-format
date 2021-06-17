@@ -64,18 +64,21 @@ ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 IncludeBlocks: Merge
 IncludeCategories:
+  # ArduinoJson header always first due to likelihood of namespace conflicts
+  - Regex:      'ArduinoJson.hpp'
+    Priority:   1
   # Headers in <> without extension
   - Regex:      '<([A-Za-z0-9\/-_])+>'
-    Priority:   1
-  # Zephyr header always first
-  - Regex:      '<zephyr.h>'
     Priority:   2
+  # Zephyr header always first among <> with extensions
+  - Regex:      '<zephyr.h>'
+    Priority:   3
   # Headers in <> with extension.
   - Regex:      '<([A-Za-z0-9.\/-_])+>'
-    Priority:   3
+    Priority:   4
   # Headers in "" with extension.
   - Regex:      '"([A-Za-z0-9.\/-_])+"'
-    Priority:   4
+    Priority:   5
 # Also recognizes main.h as the header for main_test.c
 IncludeIsMainRegex: '(_test)?$'
 IndentCaseBlocks: false

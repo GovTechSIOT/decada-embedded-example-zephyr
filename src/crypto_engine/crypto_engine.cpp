@@ -4,19 +4,26 @@ LOG_MODULE_REGISTER(crypto_engine, LOG_LEVEL_DBG);
 #include <mbedtls/pk_internal.h>
 #include <mbedtls/x509.h>
 #include <mbedtls/x509_csr.h>
+#include <net/tls_credentials.h>
 #include "crypto_engine.h"
 #include "device_uuid/device_uuid.h"
 #include "persist_store/persist_store.h"
 #include "time_engine/time_engine.h"
+#include "tls_certs.h"
+#include "watchdog_config/watchdog_config.h"
 
 /* RSA key values */
 #define MBEDTLS_KEY_SIZE (2048)
 #define MBEDTLS_EXPONENT (65537)
 
+std::string client_key;
+
 int trng_entropy_func(void* ctx, unsigned char* buf, size_t len);
 
-CryptoEngine::CryptoEngine(void)
+CryptoEngine::CryptoEngine(const int wdt_channel_id) : wdt_channel_id_(wdt_channel_id)
 {
+	wdt_ = watchdog_config::get_device_instance();
+
 	/* Initialize device object providing entropy */
 	entropy_device_ = device_get_binding(DT_CHOSEN_ZEPHYR_ENTROPY_LABEL);
 	if (!entropy_device_) {
@@ -41,6 +48,8 @@ CryptoEngine::CryptoEngine(void)
 	std::string client_cert = "";
 	csr_ = "";
 
+	wdt_feed(wdt_, wdt_channel_id_);
+
 	/* Generate keypair if certificate is invalid */
 	if (client_cert == "" || client_cert == "invalid") {
 		csr_ = generate_csr();
@@ -48,6 +57,8 @@ CryptoEngine::CryptoEngine(void)
 			LOG_ERR("No client certificate; failed to generate new CSR");
 		}
 	}
+
+	wdt_feed(wdt_, wdt_channel_id_);
 }
 
 CryptoEngine::~CryptoEngine(void)
@@ -126,6 +137,8 @@ bool CryptoEngine::generate_keypair(void)
 		return false;
 	}
 
+	wdt_feed(wdt_, wdt_channel_id_);
+
 	pk_ctx_.pk_ctx = &rsa_keypair_;
 	pk_ctx_.pk_info = &mbedtls_rsa_info;
 
@@ -138,6 +151,9 @@ bool CryptoEngine::generate_keypair(void)
 
 	/* TODO: Requires fix for NVS */
 	// write_client_private_key((char*)buf);
+	client_key = std::string((char*)buf);
+
+	wdt_feed(wdt_, wdt_channel_id_);
 
 	return true;
 }

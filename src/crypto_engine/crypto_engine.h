@@ -1,3 +1,18 @@
+/*******************************************************************************************************
+ * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ *
+ * See the License for the specific language governing permissions and limitations under the License.
+ *******************************************************************************************************/
 #ifndef _CRYPTO_ENGINE_H_
 #define _CRYPTO_ENGINE_H_
 
@@ -19,7 +34,7 @@ typedef struct {
 class CryptoEngine
 {
 public:
-	CryptoEngine(void);
+	CryptoEngine(const int channel_id);
 	virtual ~CryptoEngine(void);
 
 	static bool get_cert_info(char* buf, size_t size, const mbedtls_x509_crt* crt);
@@ -27,6 +42,9 @@ public:
 protected:
 	mbedtls_pk_context pk_ctx_;
 	std::string csr_;
+
+	const struct device* wdt_;
+	const int wdt_channel_id_;
 
 private:
 	bool generate_keypair(void);
