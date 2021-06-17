@@ -38,6 +38,13 @@
         ("pool.ntp.org")
 
 /**
+ *      Device Provisioning Key Generation
+ */
+
+// Use ECC SECP256R1 as key generation method; Comment out the next line to use RSA.
+#define USER_CONFIG_USE_ECC_SECP256R1
+
+/**
  *      DECADA Credentials
  */
 
@@ -51,7 +58,7 @@
 
 // Access secret for DECADA cloud application
 #define USER_CONFIG_DECADA_ACCESS_SECRET \
-        ("")
+        ("f")
 
 // Product key for DECADA cloud product
 #define USER_CONFIG_DECADA_PRODUCT_KEY \

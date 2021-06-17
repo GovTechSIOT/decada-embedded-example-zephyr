@@ -20,6 +20,7 @@
 #include <drivers/entropy.h>
 #include <mbedtls/ctr_drbg.h>
 #include <mbedtls/x509_crt.h>
+#include "user_config.h"
 
 /* Expected response from signing CSR */
 typedef struct {
@@ -56,7 +57,11 @@ private:
 	const char* mbedtls_pers_ = "gen_key";
 	const std::string cert_subject_base_ = "C=SG, ST=Singapore, L=Singapore, O=DECADA, OU=DECADA CA, CN=";
 
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+	mbedtls_ecp_keypair ecp_keypair_;
+#else
 	mbedtls_rsa_context rsa_keypair_;
+#endif // USER_CONFIG_USE_ECC_SECP256R1
 	mbedtls_ctr_drbg_context ctrdrbg_ctx_;
 
 	const struct device* entropy_device_;
