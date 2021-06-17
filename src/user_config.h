@@ -58,7 +58,7 @@
 
 // Access secret for DECADA cloud application
 #define USER_CONFIG_DECADA_ACCESS_SECRET \
-        ("f")
+        ("")
 
 // Product key for DECADA cloud product
 #define USER_CONFIG_DECADA_PRODUCT_KEY \
