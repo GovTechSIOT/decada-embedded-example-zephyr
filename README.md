@@ -1,7 +1,7 @@
 <a href="https://govtechsiot.github.io/decada-embedded-example-zephyr/"><img src="https://codedocs.xyz/doxygen/doxygen.svg"/></a>
 
 ## Introduction
-`decada-embedded-example-zephyr`is a functional real-time operating system example using Zephyr for embedded software developers to reference and build upon. This example showcases how one can publish sensor measure points to the government's IoT infrastructure via DECADA Cloud.
+`decada-embedded-example-zephyr` is a functional real-time operating system example using [Zephyr](https://www.zephyrproject.org/) for embedded software developers to reference and build upon. This example showcases how one can publish sensor measure points to the government's IoT infrastructure via DECADA Cloud.
 
 This repository is a lightweight RTOS variant of [decada-embedded-example-mbedos](https://github.com/GovTechSIOT/decada-embedded-example-mbedos).
 For the most feature-rich example, please visit the example-mbedos repository.
@@ -30,7 +30,7 @@ For the most feature-rich example, please visit the example-mbedos repository.
     `git clone --recurse-submodules https://github.com/GovTechSIOT/decada-embedded-example-zephyr.git`
  * Set up the development environment (see [/docs/setup_guide.pdf](/docs/setup_guide.pdf)) 
  * Open project with VSCode-PlatformIO 
- * Edit Wifi Details and Decada Credentials in `/src/user_config.h`
+ * Edit Wifi Details and DECADA Credentials in `/src/user_config.h`
  * In the IDE under PlatformIO tab, perform the following sequence
    * Clean --> Build --> Upload
 
@@ -48,7 +48,8 @@ This repository is tested on the STM32F767ZI DK with peripherals configured as:
 
 ---
 
-Other hardware targets supported by Zephyr can utilize the repository by
+Other hardware targets supported by Zephyr can utilize this repository out of the box if platformio.ini is configured properly. 
+The following steps are only required for boards that are not supported by PIO/Zephyr.
 * Adding your board's json in `/boards` for PlatformIO usage
 * Adding your board's Devicetree in `/zephyr/boards` for Zephyr usage
 
