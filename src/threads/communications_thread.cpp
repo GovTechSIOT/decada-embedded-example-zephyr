@@ -2,6 +2,7 @@
 LOG_MODULE_REGISTER(communications_thread, LOG_LEVEL_DBG);
 
 #include <net/tls_credentials.h>
+#include <power/reboot.h>
 #include <time.h>
 #include "decada_manager/decada_manager.h"
 #include "device_uuid/device_uuid.h"
@@ -120,7 +121,9 @@ void execute_communications_thread(int watchdog_id)
 	wdt_feed(wdt, wdt_channel_id);
 
 	add_tls_client_creds();
-	decada_manager.connect();
+	if (decada_manager.connect()) {
+		sys_reboot(SYS_REBOOT_WARM);
+	}
 	wdt_feed(wdt, wdt_channel_id);
 
 	decada_manager.subscribe(subscription_topics);
@@ -149,7 +152,9 @@ void execute_communications_thread(int watchdog_id)
 			LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);
 		}
 		LOG_DBG("Received from mail: %s", payload.c_str());
-		decada_manager.publish(sensor_pub_topic, payload);
+		if (decada_manager.publish(sensor_pub_topic, payload)) {
+			sys_reboot(SYS_REBOOT_WARM);
+		}
 
 		wdt_feed(wdt, wdt_channel_id);
 		k_msleep(sleep_time_ms);
