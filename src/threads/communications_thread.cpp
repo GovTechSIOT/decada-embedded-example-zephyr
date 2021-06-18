@@ -155,9 +155,8 @@ void execute_communications_thread(int watchdog_id)
 			LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);
 		}
 		LOG_DBG("Received from mail: %s", payload.c_str());
-		rc = decada_manager.publish(sensor_pub_topic, payload))
-		if (rc == 0)
-		{
+		rc = decada_manager.publish(sensor_pub_topic, payload);
+		if (rc == 0) {
 			sys_reboot(SYS_REBOOT_WARM);
 		}
 
