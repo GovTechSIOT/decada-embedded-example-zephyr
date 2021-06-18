@@ -19,7 +19,11 @@ const std::string decada_api_url = "https://ag.decada.gov.sg";
 /* MQTT Broker hostname */
 const std::string decada_mqtt_hostname = "mqtt.decada.gov.sg";
 /* MQTT Broker port */
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+const int decada_mqtt_port = 18887;
+#else
 const int decada_mqtt_port = 18885;
+#endif
 
 std::string client_cert;
 
