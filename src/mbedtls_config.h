@@ -15,9 +15,13 @@
  *******************************************************************************************************/
 #include "user_config.h"
 
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+#define MBEDTLS_ECP_C
+#else
 // Enable RSA key generation
-#define MBEDTLS_GENPRIME
 #define MBEDTLS_RSA_C
+#endif
+#define MBEDTLS_GENPRIME
 
 // Enable creating X509 CSRs
 #define MBEDTLS_PK_WRITE_C

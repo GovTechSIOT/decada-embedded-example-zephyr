@@ -150,6 +150,7 @@ bool CryptoEngine::generate_keypair(void)
 #if defined(USER_CONFIG_USE_ECC_SECP256R1)
 	LOG_DBG("Generating ECC Keypair");
 	pk_ctx_.pk_ctx = &ecp_keypair_;
+	pk_ctx_.pk_info = &mbedtls_eckey_info;
 	rc = mbedtls_ecp_gen_key(MBEDTLS_ECP_DP_SECP256R1, mbedtls_pk_ec(pk_ctx_), mbedtls_ctr_drbg_random,
 				 &ctrdrbg_ctx_);
 	if (rc != 0) {
@@ -181,7 +182,6 @@ bool CryptoEngine::generate_keypair(void)
 	/* TODO: Requires fix for NVS */
 	// write_client_private_key((char*)buf);
 	client_key = std::string((char*)buf);
-	LOG_DBG("%s", client_key.c_str());
 
 	wdt_feed(wdt_, wdt_channel_id_);
 
