@@ -166,6 +166,7 @@ bool CryptoEngine::generate_keypair(void)
 		return false;
 	}
 
+	/* RSA Keypair generation on embedded devices could take 10s of seconds - crucial to feed the watchdog as soon as we can */
 	wdt_feed(wdt_, wdt_channel_id_);
 
 	pk_ctx_.pk_ctx = &rsa_keypair_;
