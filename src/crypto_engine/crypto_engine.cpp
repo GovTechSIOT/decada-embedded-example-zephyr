@@ -10,11 +10,17 @@ LOG_MODULE_REGISTER(crypto_engine, LOG_LEVEL_DBG);
 #include "persist_store/persist_store.h"
 #include "time_engine/time_engine.h"
 #include "tls_certs.h"
+#include "user_config.h"
 #include "watchdog_config/watchdog_config.h"
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+#include "mbedtls/ecdsa.h"
+#endif // USER_CONFIG_USE_ECC_SECP256R1
 
+#if !defined(USER_CONFIG_USE_ECC_SECP256R1)
 /* RSA key values */
 #define MBEDTLS_KEY_SIZE (2048)
 #define MBEDTLS_EXPONENT (65537)
+#endif // USER_CONFIG_USE_ECC_SECP256R1
 
 std::string client_key;
 
@@ -31,7 +37,12 @@ CryptoEngine::CryptoEngine(const int wdt_channel_id) : wdt_channel_id_(wdt_chann
 		return;
 	}
 
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+	mbedtls_ecp_keypair_init(&ecp_keypair_);
+#else
 	mbedtls_rsa_init(&rsa_keypair_, MBEDTLS_RSA_PKCS_V15, 0);
+#endif // USER_CONFIG_USE_ECC_SECP256R1
+
 	mbedtls_pk_init(&pk_ctx_);
 	mbedtls_ctr_drbg_init(&ctrdrbg_ctx_);
 
@@ -67,7 +78,12 @@ CryptoEngine::~CryptoEngine(void)
 
 	mbedtls_pk_free(&pk_ctx_);
 	mbedtls_ctr_drbg_free(&ctrdrbg_ctx_);
+
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+	mbedtls_ecp_keypair_free(&ecp_keypair_);
+#else
 	mbedtls_rsa_free(&rsa_keypair_);
+#endif // USER_CONFIG_USE_ECC_SECP256R1
 }
 
 /**
@@ -130,17 +146,32 @@ std::string CryptoEngine::generate_csr(void)
  */
 bool CryptoEngine::generate_keypair(void)
 {
-	int rc = mbedtls_rsa_gen_key(&rsa_keypair_, mbedtls_ctr_drbg_random, &ctrdrbg_ctx_, MBEDTLS_KEY_SIZE,
-				     MBEDTLS_EXPONENT);
+	int rc;
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+	LOG_DBG("Generating ECC Keypair");
+	pk_ctx_.pk_ctx = &ecp_keypair_;
+	pk_ctx_.pk_info = &mbedtls_eckey_info;
+	rc = mbedtls_ecp_gen_key(MBEDTLS_ECP_DP_SECP256R1, mbedtls_pk_ec(pk_ctx_), mbedtls_ctr_drbg_random,
+				 &ctrdrbg_ctx_);
+	if (rc != 0) {
+		LOG_WRN("mbedtls_ecp_gen_key failed: -0x%04X", -rc);
+		return false;
+	}
+#else
+	LOG_DBG("Generating RSA Keypair");
+	rc = mbedtls_rsa_gen_key(&rsa_keypair_, mbedtls_ctr_drbg_random, &ctrdrbg_ctx_, MBEDTLS_KEY_SIZE,
+				 MBEDTLS_EXPONENT);
 	if (rc != 0) {
 		LOG_WRN("mbedtls_rsa_gen_key failed: -0x%04X", -rc);
 		return false;
 	}
 
+	/* RSA Keypair generation on embedded devices could take 10s of seconds - crucial to feed the watchdog as soon as we can */
 	wdt_feed(wdt_, wdt_channel_id_);
 
 	pk_ctx_.pk_ctx = &rsa_keypair_;
 	pk_ctx_.pk_info = &mbedtls_rsa_info;
+#endif // USER_CONFIG_USE_ECC_SECP256R1
 
 	unsigned char buf[4096];
 	rc = mbedtls_pk_write_key_pem(&pk_ctx_, buf, sizeof(buf));

@@ -9,6 +9,7 @@ LOG_MODULE_REGISTER(decada_manager, LOG_LEVEL_DBG);
 #include "networking/http/https_request.h"
 #include "persist_store/persist_store.h"
 #include "tls_certs.h"
+#include "user_config.h"
 #include "watchdog_config/watchdog_config.h"
 
 #define CONTENT_TYPE_JSON_UTF8 ("application/json;charset=UTF-8")
@@ -18,7 +19,11 @@ const std::string decada_api_url = "https://ag.decada.gov.sg";
 /* MQTT Broker hostname */
 const std::string decada_mqtt_hostname = "mqtt.decada.gov.sg";
 /* MQTT Broker port */
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+const int decada_mqtt_port = 18887;
+#else
 const int decada_mqtt_port = 18885;
+#endif
 
 std::string client_cert;
 
@@ -171,6 +176,9 @@ csr_sign_resp DecadaManager::sign_csr(std::string csr)
 	json["csr"] = csr;
 	json["validDay"] = 365;
 	json["timestamp"] = timestamp_ms;
+#if defined(USER_CONFIG_USE_ECC_SECP256R1)
+	json["issueAuthority"] = "ECC";
+#endif // USER_CONFIG_USE_ECC_SECP256R1
 
 	std::string json_body;
 	ArduinoJson::serializeJson(json, json_body);
