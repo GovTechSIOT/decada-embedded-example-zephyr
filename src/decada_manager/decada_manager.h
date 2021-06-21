@@ -31,6 +31,7 @@ public:
 
 private:
 	csr_sign_resp sign_csr(std::string csr) override;
+	bool check_credentials(void);
 
 	void subscription_callback(uint8_t* data, int len) override;
 	void send_service_response(std::string message_id, std::string method, std::string response);

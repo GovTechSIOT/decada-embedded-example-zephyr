@@ -20,8 +20,8 @@
 #define CLIENT_CERTS_TAG 2
 
 /* Session variables */
-extern std::string client_cert;
-extern std::string client_key;
+extern std::string session_client_cert;
+extern std::string session_client_key;
 
 /* CA Certificates */
 const char CA_CERTS[] =
@@ -44,6 +44,7 @@ const char CA_CERTS[] =
 	"KcoIVZih2nBV6lq6\n"
 	"-----END CERTIFICATE-----\n"
 #endif // USER_CONFIG_USE_ECC_SECP256R1
+
 	// Sectigo Root CA
 	"-----BEGIN CERTIFICATE-----\n"
 	"MIIGGTCCBAGgAwIBAgIQE31TnKp8MamkM3AZaIR6jTANBgkqhkiG9w0BAQwFADCB\n"

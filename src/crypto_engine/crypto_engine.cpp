@@ -22,7 +22,7 @@ LOG_MODULE_REGISTER(crypto_engine, LOG_LEVEL_DBG);
 #define MBEDTLS_EXPONENT (65537)
 #endif // USER_CONFIG_USE_ECC_SECP256R1
 
-std::string client_key;
+std::string session_client_key;
 
 int trng_entropy_func(void* ctx, unsigned char* buf, size_t len);
 
@@ -53,23 +53,6 @@ CryptoEngine::CryptoEngine(const int wdt_channel_id) : wdt_channel_id_(wdt_chann
 		LOG_ERR("mbedtls_ctr_drbg_seed failed: -0x%04X", -rc);
 		return;
 	}
-
-	/* TODO: Requires fix for NVS */
-	// std::string client_cert = read_client_certificate();
-	std::string client_cert = "";
-	csr_ = "";
-
-	wdt_feed(wdt_, wdt_channel_id_);
-
-	/* Generate keypair if certificate is invalid */
-	if (client_cert == "" || client_cert == "invalid") {
-		csr_ = generate_csr();
-		if (csr_ == "") {
-			LOG_ERR("No client certificate; failed to generate new CSR");
-		}
-	}
-
-	wdt_feed(wdt_, wdt_channel_id_);
 }
 
 CryptoEngine::~CryptoEngine(void)
@@ -84,6 +67,27 @@ CryptoEngine::~CryptoEngine(void)
 #else
 	mbedtls_rsa_free(&rsa_keypair_);
 #endif // USER_CONFIG_USE_ECC_SECP256R1
+}
+
+/**
+ *  @brief  	Return a signed client certificate
+ *  @author 	Lee Tze Han
+ *  @return 	Returns a csr_sign_resp struct
+ */
+csr_sign_resp CryptoEngine::get_client_cert(void)
+{
+	std::string csr = generate_csr();
+	if (csr == "") {
+		LOG_WRN("Failed to generate CSR");
+		return { .valid = false };
+	}
+
+	wdt_feed(wdt_, wdt_channel_id_);
+
+	csr_sign_resp resp = sign_csr(csr);
+	wdt_feed(wdt_, wdt_channel_id_);
+
+	return resp;
 }
 
 /**
@@ -182,7 +186,7 @@ bool CryptoEngine::generate_keypair(void)
 
 	/* TODO: Requires fix for NVS */
 	// write_client_private_key((char*)buf);
-	client_key = std::string((char*)buf);
+	session_client_key = std::string((char*)buf);
 
 	wdt_feed(wdt_, wdt_channel_id_);
 
