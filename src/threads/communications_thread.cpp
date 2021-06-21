@@ -50,52 +50,12 @@ void add_tls_ca_certs(void)
 	}
 }
 
-/**
- *  @brief	Add client certificate and private key to Zephyr's secure socket layer
- *  @author	Lee Tze Han
- *  @details	This function should only be called once when credentials are available
- */
-void add_tls_client_creds(void)
-{
-	/* Set client certificate */
-	int rc = tls_credential_add(CLIENT_CERTS_TAG, TLS_CREDENTIAL_SERVER_CERTIFICATE, client_cert.c_str(),
-				    client_cert.size() + 1);
-	if (rc < 0) {
-		if (rc == -EEXIST) {
-			LOG_WRN("Client certificate already exists - add_tls_client_creds should only be called once");
-		}
-		else {
-			LOG_WRN("Failed to set client certificate: %d", rc);
-		}
-	}
-	else {
-		LOG_INF("Successfully set client certificate");
-	}
-
-	/* Set client private key */
-	rc = tls_credential_add(CLIENT_CERTS_TAG, TLS_CREDENTIAL_PRIVATE_KEY, client_key.c_str(),
-				client_key.size() + 1);
-	if (rc < 0) {
-		if (rc == -EEXIST) {
-			LOG_WRN("Client key already exists - add_tls_client_creds should only be called once");
-		}
-		else {
-			LOG_WRN("Failed to set client private key: %d", rc);
-		}
-	}
-	else {
-		LOG_INF("Successfully set client private key");
-	}
-}
-
 void execute_communications_thread(int watchdog_id)
 {
 	const int sleep_time_ms = 250;
 	const struct device* wdt = watchdog_config::get_device_instance();
 	const int wdt_channel_id = watchdog_id;
 	const int rx_buf_size = 512;
-
-	int rc;
 
 	k_poll_signal_init(&wifi_signal);
 	k_poll_signal_init(&decada_connect_ok_signal);
@@ -122,7 +82,6 @@ void execute_communications_thread(int watchdog_id)
 	DecadaManager decada_manager(wdt_channel_id);
 	wdt_feed(wdt, wdt_channel_id);
 
-	add_tls_client_creds();
 	if (!decada_manager.connect()) {
 		sys_reboot(SYS_REBOOT_WARM);
 	}

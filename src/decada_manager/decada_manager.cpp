@@ -25,24 +25,89 @@ const int decada_mqtt_port = 18887;
 const int decada_mqtt_port = 18885;
 #endif
 
-std::string client_cert;
+std::string session_client_cert;
+
+/**
+ *  @brief	Add client certificate and private key to Zephyr's secure socket layer
+ *  @author	Lee Tze Han
+ *  @details	This function should only be called once when credentials are available
+ */
+void add_tls_client_creds(void)
+{
+	/* Set client certificate */
+	int rc = tls_credential_add(CLIENT_CERTS_TAG, TLS_CREDENTIAL_SERVER_CERTIFICATE, session_client_cert.c_str(),
+				    session_client_cert.size() + 1);
+	if (rc < 0) {
+		if (rc == -EEXIST) {
+			LOG_WRN("Client certificate already exists - add_tls_client_creds should only be called once");
+		}
+		else {
+			LOG_WRN("Failed to set client certificate: %d", rc);
+		}
+	}
+	else {
+		LOG_INF("Successfully set client certificate");
+	}
+
+	/* Set client private key */
+	rc = tls_credential_add(CLIENT_CERTS_TAG, TLS_CREDENTIAL_PRIVATE_KEY, session_client_key.c_str(),
+				session_client_key.size() + 1);
+	if (rc < 0) {
+		if (rc == -EEXIST) {
+			LOG_WRN("Client key already exists - add_tls_client_creds should only be called once");
+		}
+		else {
+			LOG_WRN("Failed to set client private key: %d", rc);
+		}
+	}
+	else {
+		LOG_INF("Successfully set client private key");
+	}
+}
 
 DecadaManager::DecadaManager(const int wdt_channel_id) : CryptoEngine(wdt_channel_id)
 {
 	/* If device is not yet created, attempt to provision with DECADA */
 	device_secret_ = check_device_creation();
+}
 
-	if (csr_ != "") {
-		csr_sign_resp sign_resp = sign_csr(csr_);
-		if (sign_resp.valid) {
-			/* TODO: Requires fix for NVS */
-			// write_client_certificate(sign_resp.cert);
-			// write_client_certificate_serial_number(sign_resp.cert_sn)
-			client_cert = sign_resp.cert;
-		}
-		else {
-			LOG_ERR("DecadaManager has no valid client certificate");
-		}
+/**
+ *  @brief	Check TLS credentials
+ *  @author	Lee Tze Han
+ *  @return	Validity of TLS credentials
+ */
+bool DecadaManager::check_credentials(void)
+{
+	/* TODO: Requires fix for NVS */
+	// std::string client_cert = read_client_certificate();
+	std::string client_cert = "";
+
+	/* Already has valid certificate */
+	if (client_cert != "") {
+		LOG_DBG("Using saved client certificate");
+		add_tls_client_creds();
+
+		return true;
+	}
+
+	wdt_feed(wdt_, wdt_channel_id_);
+
+	/* Create a new client certificate (and keypair) */
+	csr_sign_resp resp = get_client_cert();
+	wdt_feed(wdt_, wdt_channel_id_);
+
+	if (resp.valid) {
+		/* TODO: Requires fix for NVS */
+		// write_client_certificate(sign_resp.cert);
+		// write_client_certificate_serial_number(sign_resp.cert_sn)
+		session_client_cert = resp.cert;
+		add_tls_client_creds();
+
+		return true;
+	}
+	else {
+		LOG_WRN("Failed to get signed client certificate");
+		return false;
 	}
 }
 
@@ -53,6 +118,11 @@ DecadaManager::DecadaManager(const int wdt_channel_id) : CryptoEngine(wdt_channe
  */
 bool DecadaManager::connect(void)
 {
+	/* Ensure TLS credentials are valid */
+	if (!check_credentials()) {
+		LOG_ERR("DecadaManager has no valid TLS credentials");
+	}
+
 	std::string timestamp_ms = time_engine_.get_timestamp_ms_str();
 
 	std::string id = device_uuid + "|securemode=2,signmethod=sha256,timestamp=" + timestamp_ms + "|";

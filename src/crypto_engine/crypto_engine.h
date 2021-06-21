@@ -38,11 +38,10 @@ public:
 	CryptoEngine(const int channel_id);
 	virtual ~CryptoEngine(void);
 
-	static bool get_cert_info(char* buf, size_t size, const mbedtls_x509_crt* crt);
-
 protected:
+	csr_sign_resp get_client_cert(void);
+
 	mbedtls_pk_context pk_ctx_;
-	std::string csr_;
 
 	const struct device* wdt_;
 	const int wdt_channel_id_;
