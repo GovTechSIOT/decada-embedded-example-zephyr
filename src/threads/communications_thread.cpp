@@ -123,8 +123,7 @@ void execute_communications_thread(int watchdog_id)
 	wdt_feed(wdt, wdt_channel_id);
 
 	add_tls_client_creds();
-	rc = decada_manager.connect();
-	if (rc == 0) {
+	if (!decada_manager.connect()) {
 		sys_reboot(SYS_REBOOT_WARM);
 	}
 	wdt_feed(wdt, wdt_channel_id);
@@ -155,8 +154,7 @@ void execute_communications_thread(int watchdog_id)
 			LOG_INF("Expected size: %d, actual size %d", recv_msg.info, recv_msg.size);
 		}
 		LOG_DBG("Received from mail: %s", payload.c_str());
-		rc = decada_manager.publish(sensor_pub_topic, payload);
-		if (rc == 0) {
+		if (!decada_manager.publish(sensor_pub_topic, payload)) {
 			sys_reboot(SYS_REBOOT_WARM);
 		}
 
