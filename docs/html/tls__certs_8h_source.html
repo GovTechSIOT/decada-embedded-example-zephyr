@@ -70,7 +70,7 @@ $(function() {
 <div class="title">tls_certs.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="tls__certs_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -88,15 +88,15 @@ $(function() {
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifndef _TLS_CERTS_H_</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define _TLS_CERTS_H_</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="tls__certs_8h.html#a2baf6345e06e2c38fd0d93afe4152851">   19</a></span>&#160;<span class="preprocessor">#define CA_CERTS_TAG     1</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="tls__certs_8h.html#a8adf205b90793f69235f2b4545b32c3b">   20</a></span>&#160;<span class="preprocessor">#define CLIENT_CERTS_TAG 2</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define CA_CERTS_TAG     1</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#define CLIENT_CERTS_TAG 2</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">/* Session variables */</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">extern</span> std::string <a class="code" href="tls__certs_8h.html#a39b6ca3625cbe70d56dcc6201d39e354">session_client_cert</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">extern</span> std::string <a class="code" href="tls__certs_8h.html#a552ccd9d8934001d1fcda2d1aeef9ca4">session_client_key</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">extern</span> std::string session_client_cert;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">extern</span> std::string session_client_key;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">/* CA Certificates */</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="tls__certs_8h.html#aa7adc383d6e329222c364f9f8d0a91b5">   27</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code" href="tls__certs_8h.html#aa7adc383d6e329222c364f9f8d0a91b5">CA_CERTS</a>[] =</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> CA_CERTS[] =</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#if defined(USER_CONFIG_USE_ECC_SECP256R1)</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">// DECADA ECC CA</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="stringliteral">&quot;-----BEGIN CERTIFICATE-----\n&quot;</span></div>
@@ -156,9 +156,6 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif // _TLS_CERTS_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="atls__certs_8h_html_a552ccd9d8934001d1fcda2d1aeef9ca4"><div class="ttname"><a href="tls__certs_8h.html#a552ccd9d8934001d1fcda2d1aeef9ca4">session_client_key</a></div><div class="ttdeci">std::string session_client_key</div><div class="ttdef"><b>Definition:</b> crypto_engine.cpp:25</div></div>
-<div class="ttc" id="atls__certs_8h_html_aa7adc383d6e329222c364f9f8d0a91b5"><div class="ttname"><a href="tls__certs_8h.html#aa7adc383d6e329222c364f9f8d0a91b5">CA_CERTS</a></div><div class="ttdeci">const char CA_CERTS[]</div><div class="ttdef"><b>Definition:</b> tls_certs.h:27</div></div>
-<div class="ttc" id="atls__certs_8h_html_a39b6ca3625cbe70d56dcc6201d39e354"><div class="ttname"><a href="tls__certs_8h.html#a39b6ca3625cbe70d56dcc6201d39e354">session_client_cert</a></div><div class="ttdeci">std::string session_client_cert</div><div class="ttdef"><b>Definition:</b> decada_manager.cpp:28</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

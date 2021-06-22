@@ -70,7 +70,7 @@ $(function() {
 <div class="title">mbedtls_config.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="mbedtls__config_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -85,25 +85,24 @@ $(function() {
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * See the License for the specific language governing permissions and limitations under the License.</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> *******************************************************************************************************/</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="user__config_8h.html">user_config.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;user_config.h&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#if defined(USER_CONFIG_USE_ECC_SECP256R1)</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="mbedtls__config_8h.html#ae9d24fd58758d905e43ace39f9798b46">   19</a></span>&#160;<span class="preprocessor">#define MBEDTLS_ECP_C</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define MBEDTLS_ECP_C</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Enable RSA key generation</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define MBEDTLS_RSA_C</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="mbedtls__config_8h.html#a6bad7f4050b2dd6ea1d2b498f5b548d9">   24</a></span>&#160;<span class="preprocessor">#define MBEDTLS_GENPRIME</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define MBEDTLS_GENPRIME</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// Enable creating X509 CSRs</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="mbedtls__config_8h.html#a6ec5fb843794dcbfa6e27e5b62bd1c29">   27</a></span>&#160;<span class="preprocessor">#define MBEDTLS_PK_WRITE_C</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="mbedtls__config_8h.html#ada343519ead4d60568eeda89b8b2e38d">   28</a></span>&#160;<span class="preprocessor">#define MBEDTLS_X509_CREATE_C</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="mbedtls__config_8h.html#a2aabd723030209c1eba787c33143f05a">   29</a></span>&#160;<span class="preprocessor">#define MBEDTLS_X509_CSR_WRITE_C</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="mbedtls__config_8h.html#a6f285fd8cf87b2169373154d219011a6">   30</a></span>&#160;<span class="preprocessor">#define MBEDTLS_PEM_WRITE_C</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define MBEDTLS_PK_WRITE_C</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define MBEDTLS_X509_CREATE_C</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define MBEDTLS_X509_CSR_WRITE_C</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define MBEDTLS_PEM_WRITE_C</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define MBEDTLS_DEBUG_C</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="auser__config_8h_html"><div class="ttname"><a href="user__config_8h.html">user_config.h</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

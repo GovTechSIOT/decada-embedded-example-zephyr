@@ -70,7 +70,7 @@ $(function() {
 <div class="title">watchdog_config.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="watchdog__config_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -97,29 +97,24 @@ $(function() {
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifdef WDT_NODE</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define WDT_DEV_NAME DT_LABEL(WDT_NODE)</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="watchdog__config_8h.html#aa28d821bbb0c19086439683b4c39c1ce">   28</a></span>&#160;<span class="preprocessor">#define WDT_DEV_NAME &quot;&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define WDT_DEV_NAME &quot;&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#error &quot;Unsupported SoC and no watchdog0 alias in zephyr.dts&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef WDT_MAX_WINDOW_MS</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="watchdog__config_8h.html#ac085dae2cbacdc5eefbd0f9eb832de60">   33</a></span>&#160;<span class="preprocessor">#define WDT_MAX_WINDOW_MS (20 * MSEC_PER_SEC)</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define WDT_MAX_WINDOW_MS (20 * MSEC_PER_SEC)</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespacewatchdog__config.html">   36</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacewatchdog__config.html">watchdog_config</a></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>watchdog_config</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">const</span> <span class="keyword">struct </span>device* <a class="code" href="namespacewatchdog__config.html#ac3f99b63952f8541386b774c27f039c9">get_device_instance</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacewatchdog__config.html#a68dcafdc1ea038d8241bad5120868e25">set_watchdog_config</a>(wdt_timeout_cfg&amp; wdt_config);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">int</span> <a class="code" href="namespacewatchdog__config.html#aafcf8250d23aef49e3a19e62dfc612c6">add_watchdog</a>(wdt_timeout_cfg&amp; wdt_config);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacewatchdog__config.html#a2d042ebfed47a81e5a4a789ebfb70f7a">start_watchdog</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">const</span> <span class="keyword">struct </span>device* get_device_instance(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> set_watchdog_config(wdt_timeout_cfg&amp; wdt_config);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">int</span> add_watchdog(wdt_timeout_cfg&amp; wdt_config);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> start_watchdog(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;} <span class="comment">// namespace watchdog_config</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif // _WATCHDOG_CONFIG_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacewatchdog__config_html_aafcf8250d23aef49e3a19e62dfc612c6"><div class="ttname"><a href="namespacewatchdog__config.html#aafcf8250d23aef49e3a19e62dfc612c6">watchdog_config::add_watchdog</a></div><div class="ttdeci">int add_watchdog(wdt_timeout_cfg &amp;wdt_config)</div><div class="ttdoc">Add a watchdog and raise watchdog event flag once.</div><div class="ttdef"><b>Definition:</b> watchdog_config.cpp:39</div></div>
-<div class="ttc" id="anamespacewatchdog__config_html_ac3f99b63952f8541386b774c27f039c9"><div class="ttname"><a href="namespacewatchdog__config.html#ac3f99b63952f8541386b774c27f039c9">watchdog_config::get_device_instance</a></div><div class="ttdeci">const struct device * get_device_instance(void)</div><div class="ttdoc">Get hardware device binding.</div><div class="ttdef"><b>Definition:</b> watchdog_config.cpp:11</div></div>
-<div class="ttc" id="anamespacewatchdog__config_html_a68dcafdc1ea038d8241bad5120868e25"><div class="ttname"><a href="namespacewatchdog__config.html#a68dcafdc1ea038d8241bad5120868e25">watchdog_config::set_watchdog_config</a></div><div class="ttdeci">void set_watchdog_config(wdt_timeout_cfg &amp;wdt_config)</div><div class="ttdoc">Configure the watchdog configuration instance to reset after WDT_MAX_WINDOW without feed.</div><div class="ttdef"><b>Definition:</b> watchdog_config.cpp:27</div></div>
-<div class="ttc" id="anamespacewatchdog__config_html"><div class="ttname"><a href="namespacewatchdog__config.html">watchdog_config</a></div><div class="ttdef"><b>Definition:</b> watchdog_config.h:37</div></div>
-<div class="ttc" id="anamespacewatchdog__config_html_a2d042ebfed47a81e5a4a789ebfb70f7a"><div class="ttname"><a href="namespacewatchdog__config.html#a2d042ebfed47a81e5a4a789ebfb70f7a">watchdog_config::start_watchdog</a></div><div class="ttdeci">void start_watchdog(void)</div><div class="ttdoc">Start global hardware watchdog.</div><div class="ttdef"><b>Definition:</b> watchdog_config.cpp:56</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

@@ -70,7 +70,7 @@ $(function() {
 <div class="title">wifi_connect.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="wifi__connect_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -91,26 +91,19 @@ $(function() {
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;zephyr.h&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;net/wifi_mgmt.h&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">extern</span> <span class="keyword">struct </span>k_poll_signal <a class="code" href="wifi__connect_8h.html#a05c45be66b43c6fd704b085725eeab56">wifi_signal</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">extern</span> <span class="keyword">struct </span>k_poll_event <a class="code" href="wifi__connect_8h.html#a1233d02d2ea969923a7c0b40301068f6">wifi_events</a>[];</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">extern</span> <span class="keyword">struct </span>k_poll_signal wifi_signal;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">extern</span> <span class="keyword">struct </span>k_poll_event wifi_events[];</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="wifi__connect_8h.html#aee69a44370268d37fd267d877796c780">handle_wifi_connect_result</a>(<span class="keyword">struct</span> net_mgmt_event_callback* cb);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="wifi__connect_8h.html#a99fc7bbf7d2a8773b94a2f0943db65fc">handle_wifi_disconnect_result</a>(<span class="keyword">struct</span> net_mgmt_event_callback* cb);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> handle_wifi_connect_result(<span class="keyword">struct</span> net_mgmt_event_callback* cb);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> handle_wifi_disconnect_result(<span class="keyword">struct</span> net_mgmt_event_callback* cb);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="wifi__connect_8h.html#ac15f07860237cd9f38decab99ae087ea">wifi_mgmt_event_handler</a>(<span class="keyword">struct</span> net_mgmt_event_callback* cb, uint32_t mgmt_event, <span class="keyword">struct</span> net_if* netif);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> <a class="code" href="wifi__connect_8h.html#a2aa962ac21cf801ddeb9cf2c36580382">wifi_mgmt_event_init</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> wifi_mgmt_event_handler(<span class="keyword">struct</span> net_mgmt_event_callback* cb, uint32_t mgmt_event, <span class="keyword">struct</span> net_if* netif);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> wifi_mgmt_event_init(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="wifi__connect_8h.html#a68c1b0db091d8bb30ccc8f140101efce">wifi_connect</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> wifi_connect(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif // _WIFI_CONNECT_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="awifi__connect_8h_html_a05c45be66b43c6fd704b085725eeab56"><div class="ttname"><a href="wifi__connect_8h.html#a05c45be66b43c6fd704b085725eeab56">wifi_signal</a></div><div class="ttdeci">struct k_poll_signal wifi_signal</div><div class="ttdef"><b>Definition:</b> wifi_connect.cpp:9</div></div>
-<div class="ttc" id="awifi__connect_8h_html_ac15f07860237cd9f38decab99ae087ea"><div class="ttname"><a href="wifi__connect_8h.html#ac15f07860237cd9f38decab99ae087ea">wifi_mgmt_event_handler</a></div><div class="ttdeci">void wifi_mgmt_event_handler(struct net_mgmt_event_callback *cb, uint32_t mgmt_event, struct net_if *netif)</div><div class="ttdoc">Calls the appropriate callback based on the event.</div><div class="ttdef"><b>Definition:</b> wifi_connect.cpp:58</div></div>
-<div class="ttc" id="awifi__connect_8h_html_a1233d02d2ea969923a7c0b40301068f6"><div class="ttname"><a href="wifi__connect_8h.html#a1233d02d2ea969923a7c0b40301068f6">wifi_events</a></div><div class="ttdeci">struct k_poll_event wifi_events[]</div><div class="ttdef"><b>Definition:</b> wifi_connect.cpp:10</div></div>
-<div class="ttc" id="awifi__connect_8h_html_a2aa962ac21cf801ddeb9cf2c36580382"><div class="ttname"><a href="wifi__connect_8h.html#a2aa962ac21cf801ddeb9cf2c36580382">wifi_mgmt_event_init</a></div><div class="ttdeci">void wifi_mgmt_event_init(void)</div><div class="ttdoc">Registers events that should call callbacks specified by wifi_mgmt_event_handler.</div><div class="ttdef"><b>Definition:</b> wifi_connect.cpp:77</div></div>
-<div class="ttc" id="awifi__connect_8h_html_a68c1b0db091d8bb30ccc8f140101efce"><div class="ttname"><a href="wifi__connect_8h.html#a68c1b0db091d8bb30ccc8f140101efce">wifi_connect</a></div><div class="ttdeci">void wifi_connect(void)</div><div class="ttdoc">Connect to WiFi network asynchronously.</div><div class="ttdef"><b>Definition:</b> wifi_connect.cpp:94</div></div>
-<div class="ttc" id="awifi__connect_8h_html_a99fc7bbf7d2a8773b94a2f0943db65fc"><div class="ttname"><a href="wifi__connect_8h.html#a99fc7bbf7d2a8773b94a2f0943db65fc">handle_wifi_disconnect_result</a></div><div class="ttdeci">void handle_wifi_disconnect_result(struct net_mgmt_event_callback *cb)</div><div class="ttdoc">Callback for disconnection to WiFi.</div><div class="ttdef"><b>Definition:</b> wifi_connect.cpp:39</div></div>
-<div class="ttc" id="awifi__connect_8h_html_aee69a44370268d37fd267d877796c780"><div class="ttname"><a href="wifi__connect_8h.html#aee69a44370268d37fd267d877796c780">handle_wifi_connect_result</a></div><div class="ttdeci">void handle_wifi_connect_result(struct net_mgmt_event_callback *cb)</div><div class="ttdoc">Callback for connection to WiFi.</div><div class="ttdef"><b>Definition:</b> wifi_connect.cpp:20</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

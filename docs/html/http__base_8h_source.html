@@ -70,7 +70,7 @@ $(function() {
 <div class="title">http_base.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="http__base_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -90,13 +90,13 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;net/socket.h&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="http__response_8h.html">http_response.h</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;http_response.h&quot;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_http_base.html">   23</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_http_base.html">HttpBase</a></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="class_http_base.html#a165de2bf4eceac40de13ab9abaa73599">HttpBase</a>(std::string url, <span class="keywordtype">int</span> port);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_http_base.html#ab32721e464779d98c4b92a5895af1527">~HttpBase</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="class_http_base.html">HttpBase</a>(std::string url, <span class="keywordtype">int</span> port);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_http_base.html">HttpBase</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_http_base.html#abeb3e7afcaffc9303f6c696a4c4c10f6">add_header</a>(std::string header_name, std::string header_value);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_http_base.html#a12e074c7ea255e5409dfff1d9ecdaac7">send_request</a>(<span class="keyword">enum</span> http_method method, std::string payload = <span class="stringliteral">&quot;&quot;</span>);</div>
@@ -104,11 +104,11 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    std::string <a class="code" href="class_http_base.html#a40ab88fdf782e7fb9805b72211b8c3b1">get_response_body</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_http_base.html#a6d779a893f606376b44cc28aeb156e50">   35</a></span>&#160;    std::string <a class="code" href="class_http_base.html#a6d779a893f606376b44cc28aeb156e50">ipaddr_</a>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_http_base.html#adcdf4483a4ec6c17d8b95b6f5330aaef">   36</a></span>&#160;    std::string <a class="code" href="class_http_base.html#adcdf4483a4ec6c17d8b95b6f5330aaef">hostname_</a>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_http_base.html#a3a07c60fcb1d12470b88ff0c296e3a4d">   37</a></span>&#160;    std::string <a class="code" href="class_http_base.html#a3a07c60fcb1d12470b88ff0c296e3a4d">host_</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_http_base.html#ae9b3477e8a2547e299d3841590c5ce0a">   38</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_http_base.html#ae9b3477e8a2547e299d3841590c5ce0a">port_</a>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_http_base.html#aa7768a71764263f87333d1529bae68f7">   39</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_http_base.html#aa7768a71764263f87333d1529bae68f7">sock_</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::string ipaddr_;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    std::string hostname_;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    std::string host_;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">int</span> port_;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">int</span> sock_;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">void</span> parse_url(std::string url);</div>
@@ -126,19 +126,11 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif // _HTTP_BASE_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclass_http_base_html_a6d779a893f606376b44cc28aeb156e50"><div class="ttname"><a href="class_http_base.html#a6d779a893f606376b44cc28aeb156e50">HttpBase::ipaddr_</a></div><div class="ttdeci">std::string ipaddr_</div><div class="ttdef"><b>Definition:</b> http_base.h:35</div></div>
 <div class="ttc" id="aclass_http_base_html_a12e074c7ea255e5409dfff1d9ecdaac7"><div class="ttname"><a href="class_http_base.html#a12e074c7ea255e5409dfff1d9ecdaac7">HttpBase::send_request</a></div><div class="ttdeci">bool send_request(enum http_method method, std::string payload=&quot;&quot;)</div><div class="ttdoc">Sends a HTTP(S) request to the specified endpoint.</div><div class="ttdef"><b>Definition:</b> http_base.cpp:54</div></div>
 <div class="ttc" id="aclass_http_base_html_abeb3e7afcaffc9303f6c696a4c4c10f6"><div class="ttname"><a href="class_http_base.html#abeb3e7afcaffc9303f6c696a4c4c10f6">HttpBase::add_header</a></div><div class="ttdeci">void add_header(std::string header_name, std::string header_value)</div><div class="ttdoc">Adds a message header to the request.</div><div class="ttdef"><b>Definition:</b> http_base.cpp:39</div></div>
 <div class="ttc" id="aclass_http_response_html"><div class="ttname"><a href="class_http_response.html">HttpResponse</a></div><div class="ttdef"><b>Definition:</b> http_response.h:23</div></div>
 <div class="ttc" id="aclass_http_base_html_a40ab88fdf782e7fb9805b72211b8c3b1"><div class="ttname"><a href="class_http_base.html#a40ab88fdf782e7fb9805b72211b8c3b1">HttpBase::get_response_body</a></div><div class="ttdeci">std::string get_response_body(void)</div><div class="ttdoc">Returns parsed HTTP response body.</div><div class="ttdef"><b>Definition:</b> http_base.cpp:109</div></div>
 <div class="ttc" id="aclass_http_base_html"><div class="ttname"><a href="class_http_base.html">HttpBase</a></div><div class="ttdef"><b>Definition:</b> http_base.h:24</div></div>
-<div class="ttc" id="aclass_http_base_html_a165de2bf4eceac40de13ab9abaa73599"><div class="ttname"><a href="class_http_base.html#a165de2bf4eceac40de13ab9abaa73599">HttpBase::HttpBase</a></div><div class="ttdeci">HttpBase(std::string url, int port)</div><div class="ttdef"><b>Definition:</b> http_base.cpp:13</div></div>
-<div class="ttc" id="aclass_http_base_html_adcdf4483a4ec6c17d8b95b6f5330aaef"><div class="ttname"><a href="class_http_base.html#adcdf4483a4ec6c17d8b95b6f5330aaef">HttpBase::hostname_</a></div><div class="ttdeci">std::string hostname_</div><div class="ttdef"><b>Definition:</b> http_base.h:36</div></div>
-<div class="ttc" id="aclass_http_base_html_a3a07c60fcb1d12470b88ff0c296e3a4d"><div class="ttname"><a href="class_http_base.html#a3a07c60fcb1d12470b88ff0c296e3a4d">HttpBase::host_</a></div><div class="ttdeci">std::string host_</div><div class="ttdef"><b>Definition:</b> http_base.h:37</div></div>
-<div class="ttc" id="aclass_http_base_html_ae9b3477e8a2547e299d3841590c5ce0a"><div class="ttname"><a href="class_http_base.html#ae9b3477e8a2547e299d3841590c5ce0a">HttpBase::port_</a></div><div class="ttdeci">int port_</div><div class="ttdef"><b>Definition:</b> http_base.h:38</div></div>
-<div class="ttc" id="aclass_http_base_html_ab32721e464779d98c4b92a5895af1527"><div class="ttname"><a href="class_http_base.html#ab32721e464779d98c4b92a5895af1527">HttpBase::~HttpBase</a></div><div class="ttdeci">virtual ~HttpBase(void)</div><div class="ttdef"><b>Definition:</b> http_base.cpp:22</div></div>
-<div class="ttc" id="aclass_http_base_html_aa7768a71764263f87333d1529bae68f7"><div class="ttname"><a href="class_http_base.html#aa7768a71764263f87333d1529bae68f7">HttpBase::sock_</a></div><div class="ttdeci">int sock_</div><div class="ttdef"><b>Definition:</b> http_base.h:39</div></div>
-<div class="ttc" id="ahttp__response_8h_html"><div class="ttname"><a href="http__response_8h.html">http_response.h</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

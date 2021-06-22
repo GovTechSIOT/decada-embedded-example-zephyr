@@ -70,7 +70,7 @@ $(function() {
 <div class="title">crypto_engine.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="crypto__engine_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -92,31 +92,31 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;drivers/entropy.h&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;mbedtls/ctr_drbg.h&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;mbedtls/x509_crt.h&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="user__config_8h.html">user_config.h</a>&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;user_config.h&quot;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/* Expected response from signing CSR */</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structcsr__sign__resp.html">   26</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">/* Indicates if struct contains valid values */</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structcsr__sign__resp.html#a3f08589fae6fe7da115acf6366aec70d">   28</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structcsr__sign__resp.html#a3f08589fae6fe7da115acf6366aec70d">valid</a>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">bool</span> valid;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">/* Certificate from CA signing CSR */</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structcsr__sign__resp.html#ad9b74523fdf8abff8d04cc91c195ad9b">   30</a></span>&#160;    std::string <a class="code" href="structcsr__sign__resp.html#ad9b74523fdf8abff8d04cc91c195ad9b">cert</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    std::string cert;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">/* Serial number of issued certificate */</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structcsr__sign__resp.html#a06812009e7de980b473953669eb8fb34">   32</a></span>&#160;    std::string <a class="code" href="structcsr__sign__resp.html#a06812009e7de980b473953669eb8fb34">cert_sn</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    std::string cert_sn;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;} <a class="code" href="structcsr__sign__resp.html">csr_sign_resp</a>;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_crypto_engine.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_crypto_engine.html">CryptoEngine</a></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="class_crypto_engine.html#a726b82ccd24bee608df18fcce63e353e">CryptoEngine</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> channel_id);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_crypto_engine.html#a3b72d6162cbea54d88dad5fea5cf468c">~CryptoEngine</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="class_crypto_engine.html">CryptoEngine</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> channel_id);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_crypto_engine.html">CryptoEngine</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="structcsr__sign__resp.html">csr_sign_resp</a> <a class="code" href="class_crypto_engine.html#a0c2a68de327b5df65f348a72f3310f51">get_client_cert</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_crypto_engine.html#a3bff3490e5baa684213286ba25609c70">   44</a></span>&#160;    mbedtls_pk_context <a class="code" href="class_crypto_engine.html#a3bff3490e5baa684213286ba25609c70">pk_ctx_</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    mbedtls_pk_context pk_ctx_;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_crypto_engine.html#a105e6f06a126a7aa24d7a362edbcab9f">   46</a></span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span>device* <a class="code" href="class_crypto_engine.html#a105e6f06a126a7aa24d7a362edbcab9f">wdt_</a>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="class_crypto_engine.html#a87460d6fee888ffde04ecfbf8bdf5639">   47</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="class_crypto_engine.html#a87460d6fee888ffde04ecfbf8bdf5639">wdt_channel_id_</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span>device* wdt_;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> wdt_channel_id_;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> generate_keypair(<span class="keywordtype">void</span>);</div>
@@ -140,16 +140,7 @@ $(function() {
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif // _CRYPTO_ENGINE_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructcsr__sign__resp_html_a3f08589fae6fe7da115acf6366aec70d"><div class="ttname"><a href="structcsr__sign__resp.html#a3f08589fae6fe7da115acf6366aec70d">csr_sign_resp::valid</a></div><div class="ttdeci">bool valid</div><div class="ttdef"><b>Definition:</b> crypto_engine.h:28</div></div>
-<div class="ttc" id="aclass_crypto_engine_html_a105e6f06a126a7aa24d7a362edbcab9f"><div class="ttname"><a href="class_crypto_engine.html#a105e6f06a126a7aa24d7a362edbcab9f">CryptoEngine::wdt_</a></div><div class="ttdeci">const struct device * wdt_</div><div class="ttdef"><b>Definition:</b> crypto_engine.h:46</div></div>
-<div class="ttc" id="auser__config_8h_html"><div class="ttname"><a href="user__config_8h.html">user_config.h</a></div></div>
-<div class="ttc" id="aclass_crypto_engine_html_a3b72d6162cbea54d88dad5fea5cf468c"><div class="ttname"><a href="class_crypto_engine.html#a3b72d6162cbea54d88dad5fea5cf468c">CryptoEngine::~CryptoEngine</a></div><div class="ttdeci">virtual ~CryptoEngine(void)</div><div class="ttdef"><b>Definition:</b> crypto_engine.cpp:58</div></div>
-<div class="ttc" id="astructcsr__sign__resp_html_ad9b74523fdf8abff8d04cc91c195ad9b"><div class="ttname"><a href="structcsr__sign__resp.html#ad9b74523fdf8abff8d04cc91c195ad9b">csr_sign_resp::cert</a></div><div class="ttdeci">std::string cert</div><div class="ttdef"><b>Definition:</b> crypto_engine.h:30</div></div>
-<div class="ttc" id="astructcsr__sign__resp_html_a06812009e7de980b473953669eb8fb34"><div class="ttname"><a href="structcsr__sign__resp.html#a06812009e7de980b473953669eb8fb34">csr_sign_resp::cert_sn</a></div><div class="ttdeci">std::string cert_sn</div><div class="ttdef"><b>Definition:</b> crypto_engine.h:32</div></div>
-<div class="ttc" id="aclass_crypto_engine_html_a726b82ccd24bee608df18fcce63e353e"><div class="ttname"><a href="class_crypto_engine.html#a726b82ccd24bee608df18fcce63e353e">CryptoEngine::CryptoEngine</a></div><div class="ttdeci">CryptoEngine(const int channel_id)</div><div class="ttdef"><b>Definition:</b> crypto_engine.cpp:29</div></div>
 <div class="ttc" id="astructcsr__sign__resp_html"><div class="ttname"><a href="structcsr__sign__resp.html">csr_sign_resp</a></div><div class="ttdef"><b>Definition:</b> crypto_engine.h:26</div></div>
-<div class="ttc" id="aclass_crypto_engine_html_a3bff3490e5baa684213286ba25609c70"><div class="ttname"><a href="class_crypto_engine.html#a3bff3490e5baa684213286ba25609c70">CryptoEngine::pk_ctx_</a></div><div class="ttdeci">mbedtls_pk_context pk_ctx_</div><div class="ttdef"><b>Definition:</b> crypto_engine.h:44</div></div>
-<div class="ttc" id="aclass_crypto_engine_html_a87460d6fee888ffde04ecfbf8bdf5639"><div class="ttname"><a href="class_crypto_engine.html#a87460d6fee888ffde04ecfbf8bdf5639">CryptoEngine::wdt_channel_id_</a></div><div class="ttdeci">const int wdt_channel_id_</div><div class="ttdef"><b>Definition:</b> crypto_engine.h:47</div></div>
 <div class="ttc" id="aclass_crypto_engine_html"><div class="ttname"><a href="class_crypto_engine.html">CryptoEngine</a></div><div class="ttdef"><b>Definition:</b> crypto_engine.h:36</div></div>
 <div class="ttc" id="aclass_crypto_engine_html_a0c2a68de327b5df65f348a72f3310f51"><div class="ttname"><a href="class_crypto_engine.html#a0c2a68de327b5df65f348a72f3310f51">CryptoEngine::get_client_cert</a></div><div class="ttdeci">csr_sign_resp get_client_cert(void)</div><div class="ttdoc">Return a signed client certificate.</div><div class="ttdef"><b>Definition:</b> crypto_engine.cpp:77</div></div>
 <!-- start footer part -->

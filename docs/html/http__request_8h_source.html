@@ -70,7 +70,7 @@ $(function() {
 <div class="title">http_request.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="http__request_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2021 Government Technology Agency of Singapore (GovTech)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -89,14 +89,14 @@ $(function() {
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define _HTTP_REQUEST_H_</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="http__base_8h.html">http_base.h</a>&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;http_base.h&quot;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="http__request_8h.html#a0906dae4a42c1fef9ec0cd0a5212ed4a">   22</a></span>&#160;<span class="preprocessor">#define HTTP_PORT 80</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define HTTP_PORT 80</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_http_request.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_http_request.html">HttpRequest</a> : <span class="keyword">public</span> <a class="code" href="class_http_base.html">HttpBase</a></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="class_http_request.html#adb8e08a800ad462f4041f857d233f33c">HttpRequest</a>(std::string addr, <span class="keywordtype">int</span> port = <a class="code" href="http__request_8h.html#a0906dae4a42c1fef9ec0cd0a5212ed4a">HTTP_PORT</a>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="class_http_request.html">HttpRequest</a>(std::string addr, <span class="keywordtype">int</span> port = HTTP_PORT);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">bool</span> setup_socket(sockaddr_in* addr) <span class="keyword">override</span>;</div>
@@ -104,11 +104,8 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif // _HTTP_REQUEST_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="ahttp__base_8h_html"><div class="ttname"><a href="http__base_8h.html">http_base.h</a></div></div>
 <div class="ttc" id="aclass_http_request_html"><div class="ttname"><a href="class_http_request.html">HttpRequest</a></div><div class="ttdef"><b>Definition:</b> http_request.h:25</div></div>
 <div class="ttc" id="aclass_http_base_html"><div class="ttname"><a href="class_http_base.html">HttpBase</a></div><div class="ttdef"><b>Definition:</b> http_base.h:24</div></div>
-<div class="ttc" id="aclass_http_request_html_adb8e08a800ad462f4041f857d233f33c"><div class="ttname"><a href="class_http_request.html#adb8e08a800ad462f4041f857d233f33c">HttpRequest::HttpRequest</a></div><div class="ttdeci">HttpRequest(std::string addr, int port=HTTP_PORT)</div><div class="ttdef"><b>Definition:</b> http_request.cpp:9</div></div>
-<div class="ttc" id="ahttp__request_8h_html_a0906dae4a42c1fef9ec0cd0a5212ed4a"><div class="ttname"><a href="http__request_8h.html#a0906dae4a42c1fef9ec0cd0a5212ed4a">HTTP_PORT</a></div><div class="ttdeci">#define HTTP_PORT</div><div class="ttdef"><b>Definition:</b> http_request.h:22</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
