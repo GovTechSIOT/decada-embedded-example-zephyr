@@ -19,6 +19,14 @@
 // clang-format off
 
 /**
+ *      SDK Software Version
+ */
+
+// Maximum of 32 characters
+#define USER_CONFIG_SW_VERSION \
+        ("R1.0.0")
+
+/**
  *      WiFi Details
  */
 
