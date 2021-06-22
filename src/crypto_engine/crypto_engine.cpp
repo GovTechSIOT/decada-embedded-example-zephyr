@@ -70,7 +70,7 @@ CryptoEngine::~CryptoEngine(void)
 }
 
 /**
- *  @brief  	Return a signed client certificate
+ *  @brief  	Return a signed client certificate.
  *  @author 	Lee Tze Han
  *  @return 	Returns a csr_sign_resp struct
  */
@@ -194,7 +194,7 @@ bool CryptoEngine::generate_keypair(void)
 }
 
 /**
- *  @brief  	Create subject name for client CSR
+ *  @brief  	Create subject name for client CSR.
  *  @author 	Lee Tze Han
  *  @return 	C++ string of subject name
  */
@@ -204,7 +204,7 @@ std::string CryptoEngine::make_subject_name(void)
 }
 
 /**
- *  @brief  	Entropy callback wrapper
+ *  @brief  	Entropy callback wrapper.
  *  @author 	Lee Tze Han
  *  @param	ctx	TRNG device object
  *  @param	buf	Buffer to fill

@@ -112,7 +112,7 @@ bool DecadaManager::check_credentials(void)
 }
 
 /**
- *  @brief	Setup MQTT connection to DECADA
+ *  @brief	Setup MQTT connection to DECADA.
  *  @author	Lee Tze Han
  *  @return	Success status
  */
@@ -145,7 +145,7 @@ bool DecadaManager::connect(void)
 }
 
 /**
- *  @brief	Callback for parsing incoming MQTT publish messages
+ *  @brief	Callback for parsing incoming MQTT publish messages.
  *  @author	Lee Tze Han
  *  @param	data	Binary data
  *  @param	len	Length of data
@@ -195,7 +195,7 @@ void DecadaManager::subscription_callback(uint8_t* data, int len)
 }
 
 /**
- *  @brief	Publish a response acknowledging the message from DECADA
+ *  @brief	Publish a response acknowledging the message from DECADA.
  *  @author	Lee Tze Han
  *  @param	message_id		Message ID to be acknowledged
  *  @param	method			Service method
@@ -225,7 +225,7 @@ void DecadaManager::send_service_response(std::string message_id, std::string me
 }
 
 /**
- *  @brief	Sign generated CSR through REST API
+ *  @brief	Sign generated CSR through REST API.
  *  @author	Lee Tze Han
  *  @param	csr	Certificate Signing Request (PEM)
  *  @return	csr_sign_resp struct containing client certificate and serial number
@@ -286,7 +286,7 @@ csr_sign_resp DecadaManager::sign_csr(std::string csr)
 }
 
 /**
- *  @brief	Get access token required for REST API calls
+ *  @brief	Get access token required for REST API calls.
  *  @author	Lee Tze Han
  *  @return	Access token for DECADA REST API
  */
@@ -331,7 +331,7 @@ std::string DecadaManager::get_access_token(void)
 }
 
 /**
- *  @brief	Get device secret through REST API
+ *  @brief	Get device secret through REST API.
  *  @author	Lee Tze Han
  *  @return	Device secret in DECADA
  */
@@ -376,7 +376,7 @@ std::string DecadaManager::get_device_secret(void)
 }
 
 /**
- *  @brief	Create device as an entity under the product key specified
+ *  @brief	Create device as an entity under the product key specified.
  *  @author	Lee Tze Han
  *  @param	name	User-defined device name
  *  @return	Device secret in DECADA
@@ -430,7 +430,7 @@ std::string DecadaManager::create_device_in_decada(const std::string name)
 }
 
 /**
- *  @brief	Ensures device is created in DECADA
+ *  @brief	Ensures device is created in DECADA.
  *  @author	Lee Tze Han
  *  @return	Device secret in DECADA
  */
