@@ -13,6 +13,9 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 #define STACK_SIZE  4096
 #define PRIORITY    7
 
+/* decada-embedded-example-zephyr Software Version */
+const std::string sdk_sw_verion = "R1.0.0";
+
 /* Initialize global device UUID */
 const std::string device_uuid = read_device_uuid();
 

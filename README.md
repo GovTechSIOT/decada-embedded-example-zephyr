@@ -39,19 +39,21 @@ For the most feature-rich example, please visit the example-mbedos repository.
 ### Hardware Setup
 
 This repository is tested on the STM32F767ZI DK with peripherals configured as:
-
-**ESP32**
-
-* Pins configurable in 
-  * `/zephyr/boards/arm/manuca_dk_revb/manuca_dk_revb.dts` (`xbee-serial`)
-  * `/zephyr/boards/shields/esp_32_xbee/esp_32_xbee.overlay` (`reset-gpios`)
-
----
+* **ESP32**
+  * Pins configurable in 
+    * `/zephyr/boards/arm/manuca_dk_revb/manuca_dk_revb.dts` (`xbee-serial`)
+    * `/zephyr/boards/shields/esp_32_xbee/esp_32_xbee.overlay` (`reset-gpios`)
 
 Other hardware targets supported by Zephyr can utilize this repository out of the box if platformio.ini is configured properly. 
 The following steps are only required for boards that are not supported by PIO/Zephyr.
 * Adding your board's json in `/boards` for PlatformIO usage
 * Adding your board's Devicetree in `/zephyr/boards` for Zephyr usage
+
+
+
+## Variants
+Besides Zephyr, we provide embedded source code example(s) to connect to DECADA Cloud using other RTOS(es) as well.
+* [MbedOS](https://os.mbed.com/): `decada-embedded-example-mbedos` (https://github.com/GovTechSIOT/decada-embedded-example-mbedos)
 
 
 
