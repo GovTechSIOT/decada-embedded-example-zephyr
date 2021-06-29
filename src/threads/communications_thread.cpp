@@ -75,9 +75,8 @@ void execute_communications_thread(int watchdog_id)
 	time_manager.sync_sntp_rtc();
 	wdt_feed(wdt, wdt_channel_id);
 
-	/* TODO: Requires fix for NVS */
-	// init_persist_storage();
-	// write_sw_ver("R1.0.0");
+	init_persist_storage();
+	write_sw_ver("R1.0.0");
 
 	DecadaManager decada_manager(wdt_channel_id);
 	wdt_feed(wdt, wdt_channel_id);
@@ -92,9 +91,8 @@ void execute_communications_thread(int watchdog_id)
 	/* Signal other threads that DECADA connection is up */
 	k_poll_signal_raise(&decada_connect_ok_signal, 0);
 
-	/* TODO: Requires fix for NVS */
-	// std::string sw_ver = read_sw_ver();
-	// LOG_DBG("sw_ver (read from flash): %s", sw_ver.c_str());
+	std::string sw_ver = read_sw_ver();
+	LOG_DBG("sw_ver (read from flash): %s", sw_ver.c_str());
 
 	while (true) {
 		struct k_mbox_msg recv_msg;
