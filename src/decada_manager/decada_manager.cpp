@@ -78,13 +78,14 @@ DecadaManager::DecadaManager(const int wdt_channel_id) : CryptoEngine(wdt_channe
  */
 bool DecadaManager::check_credentials(void)
 {
-	/* TODO: Requires fix for NVS */
-	// std::string client_cert = read_client_certificate();
-	std::string client_cert = "";
+	std::string client_cert = read_client_certificate();
 
 	/* Already has valid certificate */
 	if (client_cert != "") {
 		LOG_DBG("Using saved client certificate");
+
+		session_client_cert = client_cert;
+		session_client_key = read_client_private_key();
 		add_tls_client_creds();
 
 		return true;
@@ -97,9 +98,8 @@ bool DecadaManager::check_credentials(void)
 	wdt_feed(wdt_, wdt_channel_id_);
 
 	if (resp.valid) {
-		/* TODO: Requires fix for NVS */
-		// write_client_certificate(sign_resp.cert);
-		// write_client_certificate_serial_number(sign_resp.cert_sn)
+		write_client_certificate(resp.cert);
+		write_client_certificate_serial_number(resp.cert_sn);
 		session_client_cert = resp.cert;
 		add_tls_client_creds();
 

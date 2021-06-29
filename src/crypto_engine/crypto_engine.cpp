@@ -184,8 +184,7 @@ bool CryptoEngine::generate_keypair(void)
 		return false;
 	}
 
-	/* TODO: Requires fix for NVS */
-	// write_client_private_key((char*)buf);
+	write_client_private_key((char*)buf);
 	session_client_key = std::string((char*)buf);
 
 	wdt_feed(wdt_, wdt_channel_id_);
