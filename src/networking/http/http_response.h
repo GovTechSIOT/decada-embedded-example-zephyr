@@ -22,7 +22,7 @@
 class HttpResponse
 {
 public:
-	std::string get_body(void);
+	std::string get_body(void) const;
 	void append_body(http_response* resp);
 
 private:

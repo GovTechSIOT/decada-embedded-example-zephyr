@@ -35,7 +35,7 @@ void HttpResponse::append_body(http_response* resp)
 	}
 }
 
-std::string HttpResponse::get_body(void)
+std::string HttpResponse::get_body(void) const
 {
 	return body_;
 }

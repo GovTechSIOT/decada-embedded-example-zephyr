@@ -25,21 +25,22 @@
 class DecadaManager : public CryptoEngine, public MqttClient
 {
 public:
-	DecadaManager(const int channel_id);
+	explicit DecadaManager(const int wdt_channel_id);
 
 	bool connect(void);
 
 private:
-	csr_sign_resp sign_csr(std::string csr) override;
+	csr_sign_resp sign_csr(const std::string& csr) override;
 	bool check_credentials(void);
 
 	void subscription_callback(uint8_t* data, int len) override;
-	void send_service_response(std::string message_id, std::string method, std::string response);
+	void send_service_response(const std::string& message_id, const std::string& method,
+				   const std::string& response);
 
 	/* DECADA Provisioning */
 	std::string get_access_token(void);
 	std::string get_device_secret(void);
-	std::string create_device_in_decada(const std::string name);
+	std::string create_device_in_decada(const std::string& name);
 	std::string check_device_creation(void);
 
 	std::string device_secret_;

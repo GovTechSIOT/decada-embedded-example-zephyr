@@ -24,7 +24,7 @@
 class HttpsRequest : public HttpBase
 {
 public:
-	HttpsRequest(std::string url, int port = HTTPS_PORT);
+	explicit HttpsRequest(std::string url, int port = HTTPS_PORT);
 
 private:
 	bool setup_socket(sockaddr_in* addr) override;

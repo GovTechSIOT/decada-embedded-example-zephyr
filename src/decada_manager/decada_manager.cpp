@@ -204,7 +204,8 @@ void DecadaManager::subscription_callback(uint8_t* data, int len)
  *  		is sufficiently large to handle the memory required for TLS. An alternative would be to
  *  		aggregate all outgoing MQTT messages and publish only from one thread.
  */
-void DecadaManager::send_service_response(std::string message_id, std::string method, std::string trace_result_name)
+void DecadaManager::send_service_response(const std::string& message_id, const std::string& method,
+					  const std::string& trace_result_name)
 {
 	ArduinoJson::DynamicJsonDocument json(512);
 	json["id"] = message_id;
@@ -233,7 +234,7 @@ void DecadaManager::send_service_response(std::string message_id, std::string me
  *  		a request to sign the device's CSR can be made. This is guaranteed as long
  *  		as this method is called after check_device_creation().
  */
-csr_sign_resp DecadaManager::sign_csr(std::string csr)
+csr_sign_resp DecadaManager::sign_csr(const std::string& csr)
 {
 	const std::string timestamp_ms = time_engine_.get_timestamp_ms_str();
 	const std::string access_token = get_access_token();
@@ -263,7 +264,6 @@ csr_sign_resp DecadaManager::sign_csr(std::string csr)
 	request.add_header("apim-signature", signature);
 	request.add_header("apim-timestamp", timestamp_ms);
 
-	csr_sign_resp signed_cert = { .valid = false };
 	if (request.send_request(HTTP_POST, json_body)) {
 		std::string response = request.get_response_body();
 
@@ -381,7 +381,7 @@ std::string DecadaManager::get_device_secret(void)
  *  @param	name	User-defined device name
  *  @return	Device secret in DECADA
  */
-std::string DecadaManager::create_device_in_decada(const std::string name)
+std::string DecadaManager::create_device_in_decada(const std::string& name)
 {
 	const std::string timestamp_ms = time_engine_.get_timestamp_ms_str();
 	const std::string access_token = get_access_token();

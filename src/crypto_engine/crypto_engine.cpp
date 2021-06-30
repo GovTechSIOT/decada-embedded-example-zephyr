@@ -197,7 +197,7 @@ bool CryptoEngine::generate_keypair(void)
  *  @author 	Lee Tze Han
  *  @return 	C++ string of subject name
  */
-std::string CryptoEngine::make_subject_name(void)
+std::string CryptoEngine::make_subject_name(void) const
 {
 	return cert_subject_base_ + device_uuid + TimeEngine().get_timestamp_ms_str();
 }

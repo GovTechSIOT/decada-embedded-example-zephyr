@@ -9,7 +9,7 @@ LOG_MODULE_REGISTER(dns_lookup, LOG_LEVEL_DBG);
 
 void dns_result_cb(enum dns_resolve_status status, struct dns_addrinfo* info, void* user_data);
 
-DnsLookup::DnsLookup(std::string domain_name) : query_(domain_name)
+DnsLookup::DnsLookup(const std::string& domain_name) : query_(domain_name)
 {
 	/* Setup signal and events */
 	k_poll_signal_init(&resolved_signal_);
@@ -78,7 +78,7 @@ void DnsLookup::set_resolved(struct dns_addrinfo info)
 void dns_result_cb(enum dns_resolve_status status, struct dns_addrinfo* info, void* user_data)
 {
 	/* user_data contains the DnsLookup calling context */
-	DnsLookup* dns_lookup = (DnsLookup*)user_data;
+	DnsLookup* dns_lookup = static_cast<DnsLookup*>(user_data);
 
 	switch (status) {
 	case DNS_EAI_CANCELED:

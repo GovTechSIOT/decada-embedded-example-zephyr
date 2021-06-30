@@ -7,10 +7,9 @@ LOG_MODULE_REGISTER(http_base, LOG_LEVEL_DBG);
 #define HTTP_REQUEST_PROTOCOL ("HTTP/1.1")
 #define HTTP_TIMEOUT	      (5 * MSEC_PER_SEC)
 
-void response_cb(struct http_response* recv_resp,
-		 enum http_final_call final_data, void* user_data);
+void response_cb(struct http_response* recv_resp, enum http_final_call final_data, void* user_data);
 
-HttpBase::HttpBase(std::string url, int port) : port_(port)
+HttpBase::HttpBase(const std::string& url, int port) : port_(port)
 {
 	parse_url(url);
 
@@ -36,7 +35,7 @@ HttpBase::~HttpBase(void)
  * @param       header_name	Message header name
  * @param       header_value	Message header value
  */
-void HttpBase::add_header(std::string header_name, std::string header_value)
+void HttpBase::add_header(const std::string& header_name, const std::string& header_value)
 {
 	/* Form header line (c.f. RFC2616 4.2) */
 	std::string header_line = header_name + ":" + header_value + HTTP_CRLF;
@@ -106,7 +105,7 @@ bool HttpBase::send_request(http_method method, std::string payload)
  * @author	Lee Tze Han
  * @return	Response body string
  */
-std::string HttpBase::get_response_body(void)
+std::string HttpBase::get_response_body(void) const
 {
 	return resp_.get_body();
 }
@@ -116,7 +115,7 @@ std::string HttpBase::get_response_body(void)
  * @author	Lee Tze Han
  * @param       url     URL string to be parsed
  */
-void HttpBase::parse_url(std::string url)
+void HttpBase::parse_url(const std::string& url)
 {
 	/* Find end of scheme */
 	int scheme_len = url.find("//") + 3;
@@ -182,10 +181,9 @@ bool HttpBase::connect_socket(void)
  * @param       final_data      Indicates if data buffer contains all the data or there is more to come
  * @param       user_data       User data specified in http_client_req
  */
-void response_cb(struct http_response* recv_resp,
-		 enum http_final_call final_data, void* user_data)
+void response_cb(struct http_response* recv_resp, enum http_final_call final_data, void* user_data)
 {
-	HttpResponse* resp = (HttpResponse*)user_data;
+	HttpResponse* resp = static_cast<HttpResponse*>(user_data);
 
 	/* Copy response into buffer */
 	resp->append_body(recv_resp);

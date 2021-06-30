@@ -23,7 +23,7 @@
 class DnsLookup
 {
 public:
-	DnsLookup(std::string domain_name);
+	explicit DnsLookup(const std::string& domain_name);
 
 	void dns_ipv4_lookup(void);
 

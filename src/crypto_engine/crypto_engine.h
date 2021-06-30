@@ -35,7 +35,7 @@ typedef struct {
 class CryptoEngine
 {
 public:
-	CryptoEngine(const int channel_id);
+	explicit CryptoEngine(const int wdt_channel_id);
 	virtual ~CryptoEngine(void);
 
 protected:
@@ -49,9 +49,9 @@ protected:
 private:
 	bool generate_keypair(void);
 	std::string generate_csr(void);
-	std::string make_subject_name(void);
+	std::string make_subject_name(void) const;
 
-	virtual csr_sign_resp sign_csr(std::string csr) = 0;
+	virtual csr_sign_resp sign_csr(const std::string& csr) = 0;
 
 	const char* mbedtls_pers_ = "gen_key";
 	const std::string cert_subject_base_ = "C=SG, ST=Singapore, L=Singapore, O=DECADA, OU=DECADA CA, CN=";

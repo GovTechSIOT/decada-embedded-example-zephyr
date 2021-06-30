@@ -23,13 +23,13 @@
 class HttpBase
 {
 public:
-	HttpBase(std::string url, int port);
+	HttpBase(const std::string& url, int port);
 	virtual ~HttpBase(void);
 
-	void add_header(std::string header_name, std::string header_value);
+	void add_header(const std::string& header_name, const std::string& header_value);
 	bool send_request(enum http_method method, std::string payload = "");
 
-	std::string get_response_body(void);
+	std::string get_response_body(void) const;
 
 protected:
 	std::string ipaddr_;
@@ -39,7 +39,7 @@ protected:
 	int sock_;
 
 private:
-	void parse_url(std::string url);
+	void parse_url(const std::string& url);
 
 	virtual bool setup_socket(sockaddr_in* addr) = 0;
 	bool connect_socket(void);
