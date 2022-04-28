@@ -58,11 +58,11 @@ Besides Zephyr, we provide embedded source code example(s) to connect to DECADA 
 
 
 ## Documentation and References
-* Singapore Government Tech Stack - Sensors & IoT: https://www.siot.gov.sg/core-products/decada-embedded/
-* Technical Instruction Manual for GovTech's SIOT Starter Kit: https://siot.gov.sg/starter-kit/
-* GovTech's Custom STM32F767ZI Development Kit (MANUCA DK) User Manual: https://siot.gov.sg/files/MANUCA_User_Manual_V1.pdf
+* Singapore Government Tech Stack - Sensors & IoT: https://www.developer.tech.gov.sg/products/categories/sensor-platforms-and-internet-of-things/decada-iot-tech-stack/
+* Technical Instruction Manual for GovTech's SIOT Starter Kit: https://docs.developer.tech.gov.sg/docs/decada-starter-kit-guide/
+* GovTech's Custom STM32F767ZI Development Kit (MANUCA DK) User Manual: https://docs.developer.tech.gov.sg/docs/decada-starter-kit-guide/assets/intro/MANUCA_User_Manual_V1.pdf
 
 
 
 ## License and Contributions
-The software is provided under the Apache-2.0 license (see https://www.siot.gov.sg/starter-kit/terms-and-conditions/). Contributions to this project repository are accepted under the same license. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+The software is provided under the Apache-2.0 license (see https://docs.developer.tech.gov.sg/docs/decada-starter-kit-guide/#/terms-and-conditions). Contributions to this project repository are accepted under the same license. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
